@@ -1,7 +1,8 @@
-package com.bearbrand.fourney
+package com.bearbrand.fourney.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bearbrand.fourney.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
