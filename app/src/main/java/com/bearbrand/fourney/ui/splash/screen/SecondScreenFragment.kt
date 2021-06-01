@@ -20,7 +20,7 @@ class SecondScreenFragment : Fragment() {
     ): View? {
         binding = FragmentSecondScreenBinding.inflate(inflater, container, false)
 
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        //requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         requireActivity().window.statusBarColor = resources.getColor(R.color.white)
 
         val viewPager = activity?.findViewById<ViewPager>(R.id.viewPager)

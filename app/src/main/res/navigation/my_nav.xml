@@ -31,19 +31,66 @@
             app:destination="@id/startAuthFragment"
             app:popUpTo="@id/viewPagerFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_menuActivity"
+            app:destination="@id/menuActivity" />
     </fragment>
     <fragment
         android:id="@+id/startAuthFragment"
         android:name="com.bearbrand.fourney.ui.splash.screen.StartAuthFragment"
-        android:label="StartAuthFragment" />
+        android:label="StartAuthFragment"
+        tools:layout="@layout/fragment_start_auth">
+        <action
+            android:id="@+id/action_startAuthFragment_to_loginFragment2"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_startAuthFragment_to_registerFragment2"
+            app:destination="@id/registerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/firstScreenFragment"
         android:name="com.bearbrand.fourney.ui.splash.screen.FirstScreenFragment"
-        android:label="FirstScreenFragment" >
+        android:label="FirstScreenFragment"
+        tools:layout="@layout/fragment_first_screen">
         <action
             android:id="@+id/action_firstScreenFragment_to_viewPagerFragment"
             app:destination="@id/viewPagerFragment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.bearbrand.fourney.ui.auth.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_menuActivity"
+            app:destination="@id/menuActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.bearbrand.fourney.ui.auth.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/menuActivity"
+        android:name="com.bearbrand.fourney.MenuActivity"
+        android:label="MenuActivity"
+        tools:layout="@layout/activity_menu"/>
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.bearbrand.fourney.ui.auth.CreateAccountFragment"
+        android:label="CreateAccountFragment"
+        tools:layout="@layout/fragment_create_account">
+        <action
+            android:id="@+id/action_createAccountFragment_to_menuActivity"
+            app:destination="@id/menuActivity" />
     </fragment>
 </navigation>

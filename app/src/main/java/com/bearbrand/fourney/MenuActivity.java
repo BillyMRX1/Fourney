@@ -11,11 +11,19 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Looper;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.bearbrand.fourney.activity.AuthActivity;
+import com.bearbrand.fourney.activity.SplashActivity;
 import com.bearbrand.fourney.drawer.DrawerAdapter;
 import com.bearbrand.fourney.drawer.DrawerItem;
 import com.bearbrand.fourney.drawer.SimpleItem;
@@ -25,19 +33,22 @@ import com.bearbrand.fourney.ui.home.HomeFragment;
 import com.bearbrand.fourney.ui.leaderboard.LeaderboardFragment;
 import com.bearbrand.fourney.ui.profile.ProfileFragment;
 import com.bearbrand.fourney.ui.reward.RewardFragment;
+import com.bearbrand.fourney.ui.splash.screen.StartAuthFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 import java.util.Arrays;
 
 public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener {
-    private static final int POS_CLOSE =0;
-    private static final int POS_HOME =1;
-    private static final int POS_HISTORY =2;
-    private static final int POS_REWARD =3;
-    private static final int POS_LEADERBOARD =4;
-    private static final int POS_PROFIL =5;
-    private static final int POS_LOGOUT =7;
+    private static final int POS_CLOSE = 0;
+    private static final int POS_HOME = 1;
+    private static final int POS_HISTORY = 2;
+    private static final int POS_REWARD = 3;
+    private static final int POS_LEADERBOARD = 4;
+    private static final int POS_PROFIL = 5;
+    private static final int POS_LOGOUT = 7;
 
     private String[] screenTitles;
     private Drawable[] screenIcons;
@@ -52,6 +63,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         slidingRootNav = new SlidingRootNavBuilder(this)
                 .withToolbarMenuToggle(toolbar)
                 .withMenuOpened(false)
@@ -63,55 +75,40 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
 
-        DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
-                createItemFor(POS_CLOSE),
-                createItemFor(POS_HOME).setChecked(true),
-                createItemFor(POS_HISTORY),
-                createItemFor(POS_REWARD),
-                createItemFor(POS_LEADERBOARD),
-                createItemFor(POS_PROFIL),
-                new SpaceItem(260),
-                createItemFor(POS_LOGOUT)
-        ));
-        adapter.setListener(this);
+        checkUser();
 
-        RecyclerView list = findViewById(R.id.list);
-        list.setNestedScrollingEnabled(false);
-        list.setLayoutManager(new LinearLayoutManager(this));
-        list.setAdapter(adapter);
 
-        adapter.setSelected(POS_HOME);
+
+
     }
 
     @Override
     public void onItemSelected(int position) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        if(position == POS_CLOSE){
+        if (position == POS_CLOSE) {
             slidingRootNav.closeMenu();
-        }
-        else if (position == POS_HOME){
+        } else if (position == POS_HOME) {
             HomeFragment homeFragment = new HomeFragment();
-            transaction.replace(R.id.container,homeFragment);
-        }
-        else if (position == POS_HISTORY){
+            transaction.replace(R.id.container, homeFragment);
+        } else if (position == POS_HISTORY) {
             HistoryFragment historyFragment = new HistoryFragment();
-            transaction.replace(R.id.container,historyFragment);
-        }
-        else if  (position == POS_REWARD){
+            transaction.replace(R.id.container, historyFragment);
+        } else if (position == POS_REWARD) {
             RewardFragment rewardFragment = new RewardFragment();
-            transaction.replace(R.id.container,rewardFragment);
-        }
-        else if  (position == POS_LEADERBOARD){
+            transaction.replace(R.id.container, rewardFragment);
+        } else if (position == POS_LEADERBOARD) {
             LeaderboardFragment leaderBoardFragment = new LeaderboardFragment();
-            transaction.replace(R.id.container,leaderBoardFragment);
-        }
-        else if  (position == POS_PROFIL){
+            transaction.replace(R.id.container, leaderBoardFragment);
+        } else if (position == POS_PROFIL) {
             ProfileFragment profilFragment = new ProfileFragment();
-            transaction.replace(R.id.container,profilFragment);
-        }
-        else if  (position == POS_LOGOUT){
-            Toast.makeText(this,"Anda Keluar",Toast.LENGTH_LONG).show();
+            transaction.replace(R.id.container, profilFragment);
+        } else if (position == POS_LOGOUT) {
+            FirebaseAuth.getInstance().signOut();
+            Intent in = new Intent(this, AuthActivity.class);
+            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(in);
+            finish();
         }
 
         slidingRootNav.closeMenu();
@@ -156,5 +153,57 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     @ColorInt
     private int color(@ColorRes int res) {
         return ContextCompat.getColor(this, res);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity(); // or finish();
+    }
+
+    private void checkUser() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Toast.makeText(this, "Ada user", Toast.LENGTH_LONG).show();
+            DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
+                    createItemFor(POS_CLOSE),
+                    createItemFor(POS_HOME).setChecked(true),
+                    createItemFor(POS_HISTORY),
+                    createItemFor(POS_REWARD),
+                    createItemFor(POS_LEADERBOARD),
+                    createItemFor(POS_PROFIL),
+                    new SpaceItem(260),
+                    createItemFor(POS_LOGOUT)
+            ));
+
+            adapter.setListener(this);
+
+            RecyclerView list = findViewById(R.id.list);
+            list.setNestedScrollingEnabled(false);
+            list.setLayoutManager(new LinearLayoutManager(this));
+            list.setAdapter(adapter);
+
+            adapter.setSelected(POS_HOME);
+        } else {
+            Toast.makeText(this, "Tidak ada user", Toast.LENGTH_LONG).show();
+            DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
+                    createItemFor(POS_CLOSE),
+                    createItemFor(POS_HOME).setChecked(true),
+                    createItemFor(POS_HISTORY),
+                    createItemFor(POS_REWARD),
+                    createItemFor(POS_LEADERBOARD),
+                    createItemFor(POS_PROFIL),
+                    new SpaceItem(260)
+            ));
+
+            adapter.setListener(this);
+
+            RecyclerView list = findViewById(R.id.list);
+            list.setNestedScrollingEnabled(false);
+            list.setLayoutManager(new LinearLayoutManager(this));
+            list.setAdapter(adapter);
+
+            adapter.setSelected(POS_HOME);
+        }
     }
 }
