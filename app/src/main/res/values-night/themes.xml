@@ -203,6 +203,16 @@
         <item name="android:fontFamily">@font/work_sans_medium</item>
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="white_m_14" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/work_sans_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="blue_b_18" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">@font/work_sans_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
     <style name="white_r_10" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">@font/work_sans</item>
