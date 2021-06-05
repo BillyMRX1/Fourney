@@ -23,6 +23,10 @@ class TouristAttractionFragment : Fragment() {
     ): View? {
         binding = FragmentTouristAttractionBinding.inflate(inflater, container, false)
 
+        binding.ivBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         return binding.root
     }
 
