@@ -37,8 +37,6 @@ class RecommendationFragment : Fragment() {
     var longitude: Double = 0.0
 
     private lateinit var reference: CollectionReference
-    private lateinit var data: DocumentReference
-    private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +56,7 @@ class RecommendationFragment : Fragment() {
 
     private fun loadData() {
         reference = FirebaseFirestore.getInstance().collection("place")
-        val query = reference.whereEqualTo("isOpen", true)
+        val query = reference.whereEqualTo("risk", "Low")
         query.addSnapshotListener { data, _ ->
             if (data != null) {
                 if (data.size() > 0) {
