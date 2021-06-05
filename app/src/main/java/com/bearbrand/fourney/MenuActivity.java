@@ -20,6 +20,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.TabWidget;
 import android.widget.Toast;
 
 import com.bearbrand.fourney.activity.AuthActivity;
@@ -78,6 +80,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         screenTitles = loadScreenTitles();
 
         checkUser();
+
 
 
 
@@ -151,6 +154,8 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         ta.recycle();
         return icons;
     }
+
+
 
     @ColorInt
     private int color(@ColorRes int res) {

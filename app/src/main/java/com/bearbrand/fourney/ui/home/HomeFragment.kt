@@ -3,14 +3,15 @@ package com.bearbrand.fourney.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.bearbrand.fourney.MenuActivity
+import com.bearbrand.fourney.R
 import com.bearbrand.fourney.activity.AuthActivity
+import com.bearbrand.fourney.activity.RecommendationActivity
 import com.bearbrand.fourney.adapter.AdvertiseAdapter
 import com.bearbrand.fourney.databinding.FragmentHomeBinding
 import com.bearbrand.fourney.helper.OnItemClickListener
@@ -48,8 +49,13 @@ class HomeFragment : Fragment() {
             val intent = Intent(context, AuthActivity::class.java)
             startActivity(intent)
         }
+        binding.cardRecommendation.setOnClickListener {
+            startActivity(Intent(context, RecommendationActivity::class.java))
+
+        }
         return binding.root
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -104,5 +110,6 @@ class HomeFragment : Fragment() {
 
 
     }
+
 
 }

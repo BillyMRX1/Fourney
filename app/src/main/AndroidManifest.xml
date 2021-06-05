@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fourney">
+        <activity android:name=".activity.RecommendationActivity"></activity>
         <activity
             android:name=".activity.AuthActivity"
             android:screenOrientation="portrait" />
