@@ -3,4 +3,9 @@
     <string name="icon">icon</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tantangan">Tantangan</string>
+    <string name="challenge_start">Yuk, selesaikan tantangan yang tersedia untukmu, berikut ini.</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur eleifend sem, in varius risus. Suspendisse potenti. In pharetra est non nibh tincidunt dapibus. Cras maximus lectus non lacinia cursus. Cras ex risus, viverra at nunc in, sodales facilisis dui. Suspendisse potenti. Ut auctor, dui ut imperdiet lacinia, enim massa laoreet mi, nec viverra risus risus at ante. Nulla tincidunt felis vel neque accumsan pellentesque. Etiam ullamcorper, massa vel dapibus varius, felis lorem tempor ex, a sollicitudin odio ipsum sed ipsum. Vivamus scelerisque imperdiet nisi et auctor. In dignissim magna felis, non ultrices nulla iaculis congue. Pellentesque mattis turpis nibh, eu posuere libero pellentesque id.</string>
+    <string name="selengkapnya">Selengkapnya</string>
+    <string name="error_challenge">Kamu sedang tidak berada di tempat wisata. Kunjungi tempat wisata yang aman buatmu, dan jalankan misinya</string>
 </resources>
