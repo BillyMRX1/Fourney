@@ -3,14 +3,23 @@ package com.bearbrand.fourney.ui.recommendation
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.bearbrand.fourney.R
+import com.bearbrand.fourney.adapter.ObjectAdapter
+import com.bearbrand.fourney.adapter.RecommendationAdapter
 import com.bearbrand.fourney.databinding.FragmentDetailPlaceBinding
+import com.bearbrand.fourney.helper.OnItemClickListener
+import com.bearbrand.fourney.model.ListObject
+import com.bearbrand.fourney.model.Place
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
@@ -18,6 +27,7 @@ import java.util.*
 class DetailPlaceFragment : Fragment() {
     private lateinit var binding: FragmentDetailPlaceBinding
     private val args: DetailPlaceFragmentArgs by navArgs()
+    private var adapter: ObjectAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,12 +38,37 @@ class DetailPlaceFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
+
+        loadDataObjects()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadData()
+
+    }
+
+    private fun loadDataObjects() {
+        val reference = FirebaseFirestore.getInstance().collection("objects").document(args.id).collection("listObjects")
+        //val query = reference.whereEqualTo("idPlace", args.id)
+        reference.addSnapshotListener { data, _ ->
+            if (data != null) {
+                if (data.size() > 0) {
+                    binding.rvListObject.visibility = View.VISIBLE
+                } else {
+                    binding.rvListObject.visibility = View.GONE
+                }
+            }
+        }
+        val options = FirestoreRecyclerOptions.Builder<ListObject>()
+            .setQuery(reference, ListObject::class.java)
+            .setLifecycleOwner(activity)
+            .build()
+        adapter = ObjectAdapter(options)
+        binding.rvListObject.adapter = adapter
+
+
     }
 
     private fun loadData() {

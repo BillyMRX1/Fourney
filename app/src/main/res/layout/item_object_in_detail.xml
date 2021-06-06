@@ -26,14 +26,12 @@
             android:id="@+id/tv_name_object"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tigerland"
             style="@style/black_m_12"/>
 
         <TextView
             android:id="@+id/tv_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+ 5 Poin"
             style="@style/gray_m_12"/>
 
     </LinearLayout>
