@@ -105,10 +105,13 @@ class CreateAccountFragment : Fragment(), View.OnClickListener {
         val data = FirebaseFirestore.getInstance().collection("users").document(uid)
         val userData = UserModel(
             name,
+            uid,
+            0,
+            0,
             email,
-            "0${phone}",
+            "",
             address,
-            uid
+            phone,
         )
         data.set(userData).addOnCompleteListener {
             Toast.makeText(context, "Register Berhasil", Toast.LENGTH_SHORT).show()

@@ -49,13 +49,13 @@
                 tools:text="User Name" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_edit_profile"
+                android:id="@+id/btn_ubah_foto"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:fontFamily="@font/work_sans_bold"
-                android:text="Edit Profile"
+                android:text="Ubah Foto"
                 android:textAllCaps="false"
                 android:textColor="@color/blue"
                 app:cornerRadius="30dp"
@@ -90,8 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/work_sans"
-                android:textColor="@color/blue"
+                style="@style/blue_b_16"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="@+id/imageView2"
@@ -160,9 +159,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="6dp"
@@ -172,12 +170,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/btn_edit_profile"
+                style="@style/black_r_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="14dp"
+                android:drawablePadding="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Edit Profil"
+                app:drawableEndCompat="@drawable/ic_next"
+                  />
+            <View
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_width="match_parent"
+                android:background="@color/gray"
+                android:layout_height="0.6dp"/>
+            <TextView
+                android:id="@+id/btn_ubah_password"
+                style="@style/black_r_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="14dp"
+                android:drawablePadding="16dp"
+                android:paddingTop="8dp"
+                android:text="Ubah Password"
+                app:drawableEndCompat="@drawable/ic_next"
+                />
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
