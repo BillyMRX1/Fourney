@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Fourney</string>
     <string name="icon">icon</string>
@@ -35,5 +36,4 @@
         Unknown error: the Geofence service is not available now
     </string>
     <string name="geofences_added">Geofences Added</string>
-    <string name="geofences_removed">Geofence Removed</string>
 </resources>

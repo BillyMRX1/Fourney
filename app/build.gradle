@@ -38,6 +38,7 @@ android {
     configurations {
         implementation.exclude module:'protobuf-lite'
     }
+
 }
 
 dependencies {
