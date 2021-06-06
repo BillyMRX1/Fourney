@@ -15,6 +15,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.firebase.ui.firestore.ObservableSnapshotArray
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class RecommendationAdapter(options: FirestoreRecyclerOptions<Place>, latitude: Double, longitude: Double) : FirestoreRecyclerAdapter<Place, RecommendationAdapter.ViewHolder>(options) {
     private var listener: OnItemClickListener? = null
@@ -31,6 +32,8 @@ class RecommendationAdapter(options: FirestoreRecyclerOptions<Place>, latitude: 
         var distance: TextView? = null
         var risk: TextView? = null
         var ticketPrice: TextView? = null
+        val btnDetail: FloatingActionButton? = itemView.findViewById(R.id.button_detail)
+        var desc: TextView? = null
 
 
         init {
@@ -40,7 +43,8 @@ class RecommendationAdapter(options: FirestoreRecyclerOptions<Place>, latitude: 
             risk = itemView.findViewById(R.id.tv_risk)
             ticketPrice = itemView.findViewById(R.id.tv_price)
             image = itemView.findViewById(R.id.img_recommendation)
-            itemView.setOnClickListener {
+            desc = itemView.findViewById(R.id.tv_desc)
+            btnDetail?.setOnClickListener {
                 val position = adapterPosition
                 if(position != RecyclerView.NO_POSITION && listener != null)
                     listener!!.onItemClick(snapshots.getSnapshot(position), position)
@@ -65,6 +69,7 @@ class RecommendationAdapter(options: FirestoreRecyclerOptions<Place>, latitude: 
         holder.title?.text = model.title
         holder.ticketPrice?.text = model.price
         holder.risk?.text = "${model.risk} Risk"
+        holder.desc?.text = model.desc
 
         val loc1 = Location("")
         loc1.setLatitude(model.latitude.toDouble())
