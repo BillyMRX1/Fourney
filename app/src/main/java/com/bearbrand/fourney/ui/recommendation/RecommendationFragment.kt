@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
@@ -24,6 +26,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -84,11 +89,61 @@ class RecommendationFragment : Fragment() {
             }
 
             override fun onInfoClick(snapshot: DocumentSnapshot, position: Int) {
-                TODO("Not yet implemented")
+                raiseDialog(snapshot.id)
             }
         })
 
 
+    }
+
+    private fun raiseDialog(id: String) {
+        val materialBuilder = MaterialAlertDialogBuilder(requireContext()).create()
+        val inflater = layoutInflater.inflate(R.layout.dialog_info_risk, null)
+        val btnOk: MaterialButton = inflater.findViewById(R.id.btn_ok)
+        val risk: TextView = inflater.findViewById(R.id.tv_risk)
+        val numPeople: TextView = inflater.findViewById(R.id.tv_num_people)
+        val close: ImageView = inflater.findViewById(R.id.iv_close)
+
+        val reference = FirebaseFirestore.getInstance().collection("place").document(id)
+        reference.get().addOnSuccessListener {
+            val referenceUser = FirebaseFirestore.getInstance().collection("users")
+            val query = referenceUser.whereEqualTo("location", it.getString("title"))
+            query.addSnapshotListener { data, _ ->
+                if (data != null) {
+                    if (data.size() > 0) {
+                        numPeople.text = "${data.size()} Orang"
+                        var getRisk= ""
+                        if (data.size() <= 50)  getRisk = "Low"
+                        if (data.size() > 50 && data.size() <= 100 ) getRisk = "Medium"
+                        if (data.size() > 100) getRisk = "High"
+
+                        risk.text = "${getRisk} Risk"
+
+                        if (getRisk.equals("Low", true)){
+                            getContext()?.getResources()?.let { it1 -> risk?.setTextColor(it1.getColor(R.color.green)) }
+                            getContext()?.getResources()?.let { it1 -> numPeople?.setTextColor(it1.getColor(R.color.green)) }
+
+                        }else if(getRisk.equals("Medium", true)){
+                            getContext()?.getResources()?.let { it1 -> risk?.setTextColor(it1.getColor(R.color.orange)) }
+                            getContext()?.getResources()?.let { it1 -> numPeople?.setTextColor(it1.getColor(R.color.orange)) }
+
+                        }else if(getRisk.equals("High", true)){
+                            getContext()?.getResources()?.let { it1 -> risk?.setTextColor(it1.getColor(R.color.red)) }
+                            getContext()?.getResources()?.let { it1 -> numPeople?.setTextColor(it1.getColor(R.color.red)) }
+                        }
+
+                    }
+                }
+            }
+        }
+        btnOk.setOnClickListener {
+            materialBuilder.dismiss()
+        }
+        close.setOnClickListener {
+            materialBuilder.dismiss()
+        }
+        materialBuilder.setView(inflater)
+        materialBuilder.show()
     }
 
     private fun accessLocation() {

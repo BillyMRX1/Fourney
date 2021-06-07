@@ -136,9 +136,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         mGeofencingClient = LocationServices.getGeofencingClient(this);
         mGeofenceList = new ArrayList<>();
 
-
-
-
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
     }
 
@@ -334,17 +332,6 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 Log.i(TAG, "Permission granted.");
                 performPendingGeofenceTask();
             } else {
-                // Permission denied.
-
-                // Notify the user via a SnackBar that they have rejected a core permission for the
-                // app, which makes the Activity useless. In a real app, core permissions would
-                // typically be best requested during a welcome-screen flow.
-
-                // Additionally, it is important to remember that a permission might have been
-                // rejected without asking the user for permission (device policy or "Never ask
-                // again" prompts). Therefore, a user interface affordance is typically implemented
-                // when permissions are denied. Otherwise, your app could appear unresponsive to
-                // touches or interactions which have required permissions.
                 showSnackbar(R.string.permission_denied_explanation, R.string.settings,
                         new View.OnClickListener() {
                             @Override
@@ -370,36 +357,50 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     @Override
     public void onItemSelected(int position) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (position == POS_CLOSE) {
-            slidingRootNav.closeMenu();
-        } else if (position == POS_HOME) {
-            HomeFragment homeFragment = new HomeFragment();
-            transaction.replace(R.id.container, homeFragment);
-        } else if (position == POS_HISTORY) {
-            HistoryFragment historyFragment = new HistoryFragment();
-            transaction.replace(R.id.container, historyFragment);
-        } else if (position == POS_REWARD) {
-            RewardFragment rewardFragment = new RewardFragment();
-            transaction.replace(R.id.container, rewardFragment);
-        } else if (position == POS_LEADERBOARD) {
-            LeaderboardFragment leaderBoardFragment = new LeaderboardFragment();
-            transaction.replace(R.id.container, leaderBoardFragment);
-        } else if (position == POS_PROFIL) {
-            ProfileFragment profilFragment = new ProfileFragment();
-            transaction.replace(R.id.container, profilFragment);
-        } else if (position == POS_LOGOUT) {
-            FirebaseAuth.getInstance().signOut();
-            Intent in = new Intent(this, AuthActivity.class);
-            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(in);
-            finish();
+        if (user != null) {
+            if (position == POS_CLOSE) {
+                slidingRootNav.closeMenu();
+            } else if (position == POS_HOME) {
+                HomeFragment homeFragment = new HomeFragment();
+                transaction.replace(R.id.container, homeFragment);
+            } else if (position == POS_HISTORY) {
+                HistoryFragment historyFragment = new HistoryFragment();
+                transaction.replace(R.id.container, historyFragment);
+            } else if (position == POS_REWARD) {
+                RewardFragment rewardFragment = new RewardFragment();
+                transaction.replace(R.id.container, rewardFragment);
+            } else if (position == POS_LEADERBOARD) {
+                LeaderboardFragment leaderBoardFragment = new LeaderboardFragment();
+                transaction.replace(R.id.container, leaderBoardFragment);
+            } else if (position == POS_PROFIL) {
+                ProfileFragment profilFragment = new ProfileFragment();
+                transaction.replace(R.id.container, profilFragment);
+            } else if (position == POS_LOGOUT) {
+                FirebaseAuth.getInstance().signOut();
+                Intent in = new Intent(this, AuthActivity.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(in);
+                finish();
+            }
+        }else{
+            if (position == POS_CLOSE) {
+                slidingRootNav.closeMenu();
+            } else if (position == POS_HOME) {
+                HomeFragment homeFragment = new HomeFragment();
+                transaction.replace(R.id.container, homeFragment);
+            } else if (position == POS_HISTORY) {
+                startActivity(new Intent(this, AuthActivity.class));
+            } else if (position == POS_REWARD) {
+                startActivity(new Intent(this, AuthActivity.class));
+            } else if (position == POS_LEADERBOARD) {
+                startActivity(new Intent(this, AuthActivity.class));
+            } else if (position == POS_PROFIL) {
+                startActivity(new Intent(this, AuthActivity.class));
+            }
         }
-
         slidingRootNav.closeMenu();
         transaction.addToBackStack(null);
         transaction.commit();
-
 
     }
 
@@ -441,7 +442,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
     private void checkUser() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user != null) {
             Toast.makeText(this, "Ada user", Toast.LENGTH_LONG).show();
             DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(

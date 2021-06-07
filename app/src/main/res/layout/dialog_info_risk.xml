@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardCornerRadius="15dp">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_box">
 
         <ImageView
             android:id="@+id/iv_close"
@@ -41,6 +37,7 @@
             android:fontFamily="@font/work_sans_medium"
             android:textSize="14sp"
             android:text="Low Risk"
+            android:textColor="@color/green"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +50,8 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/work_sans_semibold"
             android:textSize="24sp"
-            android:text="124 Orang"
+            android:text="0 Orang"
+            android:textColor="@color/green"
             android:drawableStart="@drawable/ic_plus_minus"
             android:drawablePadding="14dp"
             android:gravity="center_vertical"
@@ -77,7 +75,7 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_yes"
+            android:id="@+id/btn_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
@@ -94,6 +92,3 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_desc"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</com.google.android.material.card.MaterialCardView>
