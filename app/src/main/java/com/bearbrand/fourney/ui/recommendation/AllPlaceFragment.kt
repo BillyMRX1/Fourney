@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.navigation.fragment.findNavController
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.adapter.AllPlaceAdapter
 import com.bearbrand.fourney.adapter.RecommendationAdapter
@@ -75,7 +76,8 @@ class AllPlaceFragment : Fragment() {
 
         adapter?.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(snapshot: DocumentSnapshot, position: Int) {
-
+                val id = snapshot.id
+                findNavController().navigate(TouristAttractionFragmentDirections.actionTouristAttractionFragmentToDetailPlaceFragment2(id,position))
             }
         })
 

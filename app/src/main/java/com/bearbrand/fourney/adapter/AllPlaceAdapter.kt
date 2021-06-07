@@ -14,6 +14,7 @@ import com.bearbrand.fourney.model.Place
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.firebase.ui.firestore.ObservableSnapshotArray
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AllPlaceAdapter(options: FirestoreRecyclerOptions<Place>, latitude: Double, longitude: Double) : FirestoreRecyclerAdapter<Place, AllPlaceAdapter.ViewHolder>(options) {
     private var listener: OnItemClickListener? = null
@@ -30,6 +31,7 @@ class AllPlaceAdapter(options: FirestoreRecyclerOptions<Place>, latitude: Double
         var distance: TextView? = null
         var risk: TextView? = null
         var numObject: TextView? = null
+        val btnDetail: FloatingActionButton? = itemView.findViewById(R.id.button_detail)
 
 
         init {
@@ -39,7 +41,7 @@ class AllPlaceAdapter(options: FirestoreRecyclerOptions<Place>, latitude: Double
             risk = itemView.findViewById(R.id.tv_risk)
             numObject = itemView.findViewById(R.id.tv_object)
             image = itemView.findViewById(R.id.img_place)
-            itemView.setOnClickListener {
+            btnDetail?.setOnClickListener {
                 val position = adapterPosition
                 if(position != RecyclerView.NO_POSITION && listener != null)
                     listener!!.onItemClick(snapshots.getSnapshot(position), position)

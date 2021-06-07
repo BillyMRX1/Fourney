@@ -5,12 +5,16 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.bearbrand.fourney.R
 import com.bearbrand.fourney.adapter.RecommendationAdapter
 import com.bearbrand.fourney.databinding.FragmentRecommendationBinding
 import com.bearbrand.fourney.helper.OnItemClickListener
@@ -75,7 +79,8 @@ class RecommendationFragment : Fragment() {
 
         adapter?.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(snapshot: DocumentSnapshot, position: Int) {
-
+                val id = snapshot.id
+                findNavController().navigate(TouristAttractionFragmentDirections.actionTouristAttractionFragmentToDetailPlaceFragment2(id,position))
             }
         })
 

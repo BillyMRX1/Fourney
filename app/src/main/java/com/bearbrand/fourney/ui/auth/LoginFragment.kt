@@ -86,6 +86,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
+            binding.progress.visibility = View.GONE
         }
 
     }

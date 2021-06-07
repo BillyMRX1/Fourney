@@ -9,5 +9,7 @@ data class Place (
     var isOpen: Boolean = true,
     var image: String = "",
     var isAdvertised: Boolean = true,
-    var price: String = ""
+    var price: String = "",
+    var time: String = "",
+    var desc : String = ""
 )

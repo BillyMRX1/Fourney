@@ -70,20 +70,21 @@ class CreateAccountFragment : Fragment(), View.OnClickListener {
                 val pass = binding.tilPassword.editText?.text.toString()
                 val phone = binding.tilPhoneNumber.editText?.text.toString()
                 val address = binding.tilAddress.editText?.text.toString()
+                val location = ""
 
                 if (!isValidRegister(name, pass, phone, address))
                     binding.progress.visibility = View.GONE
                 else
-                    registerUser(name, pass, phone, address)
+                    registerUser(name, pass, phone, address, location)
             }
         }
     }
 
-    private fun registerUser(name: String, pass: String, phone: String, address: String) {
+    private fun registerUser(name: String, pass: String, phone: String, address: String, location: String) {
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
             if (it.isSuccessful) {
                 val user = FirebaseAuth.getInstance().currentUser
-                saveUserData(user?.uid!!, email, name, phone, address)
+                saveUserData(user?.uid!!, email, name, phone, address, location)
             } else {
                 Toast.makeText(context, "Failed to Register", Toast.LENGTH_SHORT).show()
             }
@@ -100,7 +101,8 @@ class CreateAccountFragment : Fragment(), View.OnClickListener {
         email: String,
         name: String,
         phone: String,
-        address: String
+        address: String,
+        location: String
     ) {
         val data = FirebaseFirestore.getInstance().collection("users").document(uid)
         val userData = UserModel(
@@ -108,6 +110,7 @@ class CreateAccountFragment : Fragment(), View.OnClickListener {
             email,
             "0${phone}",
             address,
+            location,
             uid
         )
         data.set(userData).addOnCompleteListener {
