@@ -1,13 +1,15 @@
 package com.bearbrand.fourney.adapter
 
+import android.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.lifecycle.Lifecycle
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.bearbrand.fourney.ui.splash.screen.SecondScreenFragment
 import com.bearbrand.fourney.ui.splash.screen.StartAuthFragment
 import com.bearbrand.fourney.ui.splash.screen.ThirdScreenFragment
+
 
 class ViewPagerAdapter(fm: FragmentManager): FragmentPagerAdapter(fm) {
     private val fragmentList = listOf(
@@ -22,4 +24,5 @@ class ViewPagerAdapter(fm: FragmentManager): FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return fragmentList[position]
     }
+
 }

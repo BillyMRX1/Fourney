@@ -82,6 +82,10 @@ class RecommendationFragment : Fragment() {
                 val id = snapshot.id
                 findNavController().navigate(TouristAttractionFragmentDirections.actionTouristAttractionFragmentToDetailPlaceFragment2(id,position))
             }
+
+            override fun onInfoClick(snapshot: DocumentSnapshot, position: Int) {
+                TODO("Not yet implemented")
+            }
         })
 
 

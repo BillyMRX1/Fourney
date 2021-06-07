@@ -3,13 +3,11 @@ package com.bearbrand.fourney.ui.splash.screen
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.bearbrand.fourney.MenuActivity
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.FragmentStartAuthBinding
@@ -41,13 +39,15 @@ class StartAuthFragment : Fragment() {
         }
 
         binding.btnMasuk.setOnClickListener {
+
             val mFragmentMasuk = LoginFragment()
 
-            mFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.fragmentContainerView, mFragmentMasuk, LoginFragment::class.java.simpleName)
-                addToBackStack(null)
-                commit()
-            }
+                mFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.fragmentContainerView, mFragmentMasuk, LoginFragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+//
         }
         binding.tvLewati.setOnClickListener {
             val intent =
@@ -74,6 +74,13 @@ class StartAuthFragment : Fragment() {
         editor.putBoolean("Finished", true)
         editor.apply()
     }
+
+//    private fun startAuthOpened() {
+//        val sharedPref = requireActivity().getSharedPreferences("startAuth", Context.MODE_PRIVATE)
+//        val editor = sharedPref.edit()
+//        editor.putBoolean("Start", true)
+//        editor.apply()
+//    }
 
 
 }

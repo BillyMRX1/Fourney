@@ -8,19 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.bearbrand.fourney.MenuActivity
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.adapter.ObjectAdapter
-import com.bearbrand.fourney.adapter.RecommendationAdapter
 import com.bearbrand.fourney.databinding.FragmentDetailPlaceBinding
-import com.bearbrand.fourney.helper.OnItemClickListener
 import com.bearbrand.fourney.model.ListObject
-import com.bearbrand.fourney.model.Place
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.*
 import java.util.*
 
 
@@ -28,6 +27,8 @@ class DetailPlaceFragment : Fragment() {
     private lateinit var binding: FragmentDetailPlaceBinding
     private val args: DetailPlaceFragmentArgs by navArgs()
     private var adapter: ObjectAdapter? = null
+    private lateinit var reference: DocumentReference
+    private lateinit var referenceUser: DocumentReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +41,48 @@ class DetailPlaceFragment : Fragment() {
         }
 
         loadDataObjects()
+//        checkUser()
         return binding.root
     }
+
+    private fun checkUser() {
+//        reference = FirebaseFirestore.getInstance().collection("place")
+//        reference.get().addOnCompleteListener(OnCompleteListener { task ->
+//            if (!checkPermissions()) {
+//                mPendingGeofenceTask = PendingGeofenceTask.ADD
+//                requestPermissions()
+//                return@OnCompleteListener
+//            }
+//            for (document in task.result) {
+//                MenuActivity.BAY_AREA_LANDMARKS[document.getString("title")] = LatLng(
+//                    java.lang.Double.valueOf(document.getString("latitude")),
+//                    java.lang.Double.valueOf(document.getString("longitude"))
+//                )
+//            }
+//
+//            //GEOFENCE
+//            populateGeofenceList(MenuActivity.BAY_AREA_LANDMARKS)
+//            Log.d(MenuActivity.TAG, MenuActivity.BAY_AREA_LANDMARKS.toString())
+//            addGeofences()
+//            performPendingGeofenceTask()
+//        })
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        referenceUser = FirebaseFirestore.getInstance().collection("users").document(uid!!)
+        referenceUser.get().addOnSuccessListener { document ->
+                reference = FirebaseFirestore.getInstance().collection("place").document(args.id)
+                reference.get().addOnSuccessListener { result ->
+                    Log.d("cek lokasi", document.getString("location").toString())
+                    Log.d("cek title", result.getString("title").toString())
+                    if (document.getString("location").toString().equals(result.getString("title").toString())){
+                        binding.btnStartChallenge.isEnabled = true
+                    }else{
+                        binding.btnStartChallenge.isEnabled = false
+                    }
+            }
+
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +91,8 @@ class DetailPlaceFragment : Fragment() {
     }
 
     private fun loadDataObjects() {
-        val reference = FirebaseFirestore.getInstance().collection("objects").document(args.id).collection("listObjects")
+        val reference = FirebaseFirestore.getInstance().collection("objects").document(args.id)
+            .collection("listObjects")
         //val query = reference.whereEqualTo("idPlace", args.id)
         reference.addSnapshotListener { data, _ ->
             if (data != null) {
@@ -76,6 +118,19 @@ class DetailPlaceFragment : Fragment() {
         val id = args.id
         val reference = FirebaseFirestore.getInstance().collection("place").document(id)
         reference.get().addOnSuccessListener {
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            referenceUser = FirebaseFirestore.getInstance().collection("users").document(uid!!)
+            referenceUser.get().addOnSuccessListener { document ->
+
+                val locationUser = document.getString("location").toString()
+                val titlePlace = it.getString("title").toString()
+
+                if (locationUser.equals(titlePlace,true)){
+                    binding.btnStartChallenge.isEnabled = true
+                }else{
+                    binding.btnStartChallenge.isEnabled = false
+                }
+            }
             binding.progress.visibility = View.GONE
             binding.imgPlace.load(it.getString("image"))
             binding.tvTitle.text = it.getString("title")
@@ -96,27 +151,30 @@ class DetailPlaceFragment : Fragment() {
                 addresses[0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 
             binding.tvAddress.text = address
-            binding.tvPrice.text= it.getString("price")
+            binding.tvPrice.text = it.getString("price")
 
             val risk = it.getString("risk")
             binding.tvRisk.text = "${risk} Risk"
 
-            if (risk.equals("Low", true)){
+            if (risk.equals("Low", true)) {
                 binding.tvRisk.setTextColor(requireContext().getResources().getColor(R.color.green))
                 //TO DO: perbaiki drawable tintnya, masih belom bisa
-            }else if(risk.equals("Medium", true)){
-                binding.tvRisk.setTextColor(requireContext().getResources().getColor(R.color.orange))
-            }else if(risk.equals("High", true)){
+            } else if (risk.equals("Medium", true)) {
+                binding.tvRisk.setTextColor(
+                    requireContext().getResources().getColor(R.color.orange)
+                )
+            } else if (risk.equals("High", true)) {
                 binding.tvRisk.setTextColor(requireContext().getResources().getColor(R.color.red))
             }
 
             val label = it.getBoolean("isOpen")
 
-            if (label == true){
+            if (label == true) {
                 binding.openLabel.text = "Buka"
-            }else{
-                binding.openLabel.text =  "Tutup"
-                binding.openLabel.background = requireContext().getResources().getDrawable(R.drawable.bg_red)
+            } else {
+                binding.openLabel.text = "Tutup"
+                binding.openLabel.background =
+                    requireContext().getResources().getDrawable(R.drawable.bg_red)
             }
 
             binding.tvNumObject.text = "${it.getLong("numObject")} Objek Tersedia"

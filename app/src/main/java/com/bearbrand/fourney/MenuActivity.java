@@ -133,8 +133,6 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
 
-        checkUser();
-
         mGeofencingClient = LocationServices.getGeofencingClient(this);
         mGeofenceList = new ArrayList<>();
 
@@ -157,30 +155,8 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         if (!checkPermissions()) {
             requestPermissions();
         } else {
-            reference = FirebaseFirestore.getInstance().collection("place");
-            reference.get().addOnCompleteListener (new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+            checkUser();
 
-                    if (!checkPermissions()) {
-                        mPendingGeofenceTask = PendingGeofenceTask.ADD;
-                        requestPermissions();
-                        return;
-                    }
-
-                    for (DocumentSnapshot document : task.getResult()){
-                        BAY_AREA_LANDMARKS.put(document.getString("title"), new LatLng(Double.valueOf(document.getString("latitude")), Double.valueOf(document.getString("longitude"))));
-                    }
-
-                    //GEOFENCE
-                    populateGeofenceList(BAY_AREA_LANDMARKS);
-
-                    Log.d(TAG, BAY_AREA_LANDMARKS.toString());
-
-                    addGeofences();
-                    performPendingGeofenceTask();
-
-                }});
         }
     }
 
@@ -487,6 +463,31 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
             list.setAdapter(adapter);
 
             adapter.setSelected(POS_HOME);
+
+            reference = FirebaseFirestore.getInstance().collection("place");
+            reference.get().addOnCompleteListener (new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+
+                    if (!checkPermissions()) {
+                        mPendingGeofenceTask = PendingGeofenceTask.ADD;
+                        requestPermissions();
+                        return;
+                    }
+
+                    for (DocumentSnapshot document : task.getResult()){
+                        BAY_AREA_LANDMARKS.put(document.getString("title"), new LatLng(Double.valueOf(document.getString("latitude")), Double.valueOf(document.getString("longitude"))));
+                    }
+
+                    //GEOFENCE
+                    populateGeofenceList(BAY_AREA_LANDMARKS);
+
+                    Log.d(TAG, BAY_AREA_LANDMARKS.toString());
+
+                    addGeofences();
+                    performPendingGeofenceTask();
+
+                }});
         } else {
             Toast.makeText(this, "Tidak ada user", Toast.LENGTH_LONG).show();
             DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(

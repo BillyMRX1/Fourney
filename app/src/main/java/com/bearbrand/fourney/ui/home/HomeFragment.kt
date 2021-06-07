@@ -106,6 +106,10 @@ class HomeFragment : Fragment() {
             override fun onItemClick(snapshot: DocumentSnapshot, position: Int) {
 
             }
+
+            override fun onInfoClick(snapshot: DocumentSnapshot, position: Int) {
+                TODO("Not yet implemented")
+            }
         })
 
 
