@@ -62,14 +62,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.OnProgressListener;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -89,6 +95,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private SlidingRootNav slidingRootNav;
     FirebaseUser user;
     DocumentReference ref;
+    CollectionReference reference;
 
     //GEOFENCE
     private static final String TAG = MenuActivity.class.getSimpleName();
@@ -103,6 +110,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private PendingIntent mGeofencePendingIntent;
 
     private PendingGeofenceTask mPendingGeofenceTask = PendingGeofenceTask.NONE;
+    static HashMap<String, LatLng> BAY_AREA_LANDMARKS = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,17 +135,11 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
         checkUser();
 
-
-        //GEOFENCE
-        mGeofenceList = new ArrayList<>();
-        populateGeofenceList();
         mGeofencingClient = LocationServices.getGeofencingClient(this);
+        mGeofenceList = new ArrayList<>();
 
-        if (!checkPermissions()) {
-            mPendingGeofenceTask = PendingGeofenceTask.ADD;
-            requestPermissions();
-            return;
-        }
+
+
 
 
     }
@@ -155,11 +157,34 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         if (!checkPermissions()) {
             requestPermissions();
         } else {
-            addGeofences();
-            performPendingGeofenceTask();
+            reference = FirebaseFirestore.getInstance().collection("place");
+            reference.get().addOnCompleteListener (new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+
+                    if (!checkPermissions()) {
+                        mPendingGeofenceTask = PendingGeofenceTask.ADD;
+                        requestPermissions();
+                        return;
+                    }
+
+                    for (DocumentSnapshot document : task.getResult()){
+                        BAY_AREA_LANDMARKS.put(document.getString("title"), new LatLng(Double.valueOf(document.getString("latitude")), Double.valueOf(document.getString("longitude"))));
+                    }
+
+                    //GEOFENCE
+                    populateGeofenceList(BAY_AREA_LANDMARKS);
+
+                    Log.d(TAG, BAY_AREA_LANDMARKS.toString());
+
+                    addGeofences();
+                    performPendingGeofenceTask();
+
+                }});
         }
     }
 
+    //DIPANGGIL
     private GeofencingRequest getGeofencingRequest() {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
@@ -169,7 +194,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
 
-
+    //DIPANGGIL
     private void addGeofences() {
         if (!checkPermissions()) {
             showSnackbar(getString(R.string.insufficient_permissions));
@@ -204,7 +229,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
 
-
+    //DIPANGGIL
     private PendingIntent getGeofencePendingIntent() {
         //update location in firestore
         // Reuse the PendingIntent if we already have it.
@@ -217,10 +242,10 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         return mGeofencePendingIntent;
     }
 
-    private void populateGeofenceList() {
+    //DIPANGGIL
+    private void populateGeofenceList(HashMap<String, LatLng> dataLandmarks) {
 
-
-        for (Map.Entry<String, LatLng> entry : GeoConstants.BAY_AREA_LANDMARKS.entrySet()) {
+        for (Map.Entry<String, LatLng> entry : dataLandmarks.entrySet()) {
 
             mGeofenceList.add(new Geofence.Builder()
                     // Set the request ID of the geofence. This is a string to identify this
@@ -246,10 +271,10 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     // Create the geofence.
                     .build());
         }
+
     }
 
-
-
+    //DIPANGGIL
     private void performPendingGeofenceTask() {
         if (mPendingGeofenceTask == PendingGeofenceTask.ADD) {
             addGeofences();
@@ -284,9 +309,6 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 .putBoolean(GeoConstants.GEOFENCES_ADDED_KEY, added)
                 .apply();
     }
-
-
-
 
 
     private boolean checkPermissions() {

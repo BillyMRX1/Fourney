@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bearbrand.fourney.model.Place;
+import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,53 +51,19 @@ public class GeoConstants {
      */
     static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS =
             GEOFENCE_EXPIRATION_IN_HOURS * 60 * 60 * 1000;
-    static final float GEOFENCE_RADIUS_IN_METERS = 10; // 1 mile, 1.6 km
+    static final float GEOFENCE_RADIUS_IN_METERS = 500;
 
-    /**
-     * Map for storing information about airports in the San Francisco bay area.
-     */
+
     static HashMap<String, LatLng>  BAY_AREA_LANDMARKS = new HashMap<>();
 
 //
     static {
-//    ref = FirebaseFirestore.getInstance().collection("place");
-//    ref.addSnapshotListener (new EventListener<QuerySnapshot>() {
-//
-//        @Override
-//        public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
-//
-//            if (value != null){
-//                for (DocumentSnapshot document : value.getDocuments()) {
-//                    Log.d(TAG, document.getId()+ " => " + document.getString("title"));
-//                    BAY_AREA_LANDMARKS.put(document.getString("title"), new LatLng(37.621313, -122.378955));
-//
-//                }
-//
-//            }
-//        }
-//
-//    });
-////           ref.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-////               @Override
-////               public void onComplete(@NonNull Task<QuerySnapshot> task) {
-////                   TEMP_AREA_LANDMARKS = new HashMap<>();
-////                   if (task.isSuccessful()) {
-////                           for (QueryDocumentSnapshot document : task.getResult()) {
-////                               Log.d(TAG, document.getId()+ " => " + document.getString("title"));
-////                               TEMP_AREA_LANDMARKS.put(document.getString("title"), new LatLng(37.621313, -122.378955));
-////
-////                       }
-////                   }
-////               }
-////
-////           });
-////        BAY_AREA_LANDMARKS.putAll(LandmarkData.getListData());
+//        BAY_AREA_LANDMARKS.put("Predator Fun Park", new LatLng(-7.912344094580394, 112.5484513703529));
+//        BAY_AREA_LANDMARKS.put("Jatim Park 1", new LatLng(-7.884546331605805, 112.52488841751503));
+//        BAY_AREA_LANDMARKS.put("My Home", new LatLng(-0.4663570833006945, 116.94818693131232));
+//        BAY_AREA_LANDMARKS.put("Rumah Sasi", new LatLng(0.5500, 117.5731));
 
-        // San Francisco International Airport.
-        BAY_AREA_LANDMARKS.put("JATIM_PARK_1", new LatLng(37.621313, -122.378955));
 
-        // Googleplex.
-        BAY_AREA_LANDMARKS.put("RUMAH_SASI", new LatLng(0.5500, 117.5731));
 
     }
 }
