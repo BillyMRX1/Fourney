@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
@@ -29,12 +30,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TabWidget;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bearbrand.fourney.activity.AuthActivity;
@@ -72,13 +77,20 @@ import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 import org.jetbrains.annotations.NotNull;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener, OnCompleteListener<Void>{
     private static final int POS_CLOSE = 0;
@@ -133,14 +145,11 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
 
-        checkUser();
-
         mGeofencingClient = LocationServices.getGeofencingClient(this);
         mGeofenceList = new ArrayList<>();
 
-
-
-
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        new FetchFeed().execute();
 
     }
 
@@ -157,30 +166,8 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         if (!checkPermissions()) {
             requestPermissions();
         } else {
-            reference = FirebaseFirestore.getInstance().collection("place");
-            reference.get().addOnCompleteListener (new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+            checkUserLocation();
 
-                    if (!checkPermissions()) {
-                        mPendingGeofenceTask = PendingGeofenceTask.ADD;
-                        requestPermissions();
-                        return;
-                    }
-
-                    for (DocumentSnapshot document : task.getResult()){
-                        BAY_AREA_LANDMARKS.put(document.getString("title"), new LatLng(Double.valueOf(document.getString("latitude")), Double.valueOf(document.getString("longitude"))));
-                    }
-
-                    //GEOFENCE
-                    populateGeofenceList(BAY_AREA_LANDMARKS);
-
-                    Log.d(TAG, BAY_AREA_LANDMARKS.toString());
-
-                    addGeofences();
-                    performPendingGeofenceTask();
-
-                }});
         }
     }
 
@@ -358,17 +345,6 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 Log.i(TAG, "Permission granted.");
                 performPendingGeofenceTask();
             } else {
-                // Permission denied.
-
-                // Notify the user via a SnackBar that they have rejected a core permission for the
-                // app, which makes the Activity useless. In a real app, core permissions would
-                // typically be best requested during a welcome-screen flow.
-
-                // Additionally, it is important to remember that a permission might have been
-                // rejected without asking the user for permission (device policy or "Never ask
-                // again" prompts). Therefore, a user interface affordance is typically implemented
-                // when permissions are denied. Otherwise, your app could appear unresponsive to
-                // touches or interactions which have required permissions.
                 showSnackbar(R.string.permission_denied_explanation, R.string.settings,
                         new View.OnClickListener() {
                             @Override
@@ -394,36 +370,50 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     @Override
     public void onItemSelected(int position) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (position == POS_CLOSE) {
-            slidingRootNav.closeMenu();
-        } else if (position == POS_HOME) {
-            HomeFragment homeFragment = new HomeFragment();
-            transaction.replace(R.id.container, homeFragment);
-        } else if (position == POS_HISTORY) {
-            HistoryFragment historyFragment = new HistoryFragment();
-            transaction.replace(R.id.container, historyFragment);
-        } else if (position == POS_REWARD) {
-            RewardFragment rewardFragment = new RewardFragment();
-            transaction.replace(R.id.container, rewardFragment);
-        } else if (position == POS_LEADERBOARD) {
-            LeaderboardFragment leaderBoardFragment = new LeaderboardFragment();
-            transaction.replace(R.id.container, leaderBoardFragment);
-        } else if (position == POS_PROFIL) {
-            ProfileFragment profilFragment = new ProfileFragment();
-            transaction.replace(R.id.container, profilFragment);
-        } else if (position == POS_LOGOUT) {
-            FirebaseAuth.getInstance().signOut();
-            Intent in = new Intent(this, AuthActivity.class);
-            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(in);
-            finish();
+        if (user != null) {
+            if (position == POS_CLOSE) {
+                slidingRootNav.closeMenu();
+            } else if (position == POS_HOME) {
+                HomeFragment homeFragment = new HomeFragment();
+                transaction.replace(R.id.container, homeFragment);
+            } else if (position == POS_HISTORY) {
+                HistoryFragment historyFragment = new HistoryFragment();
+                transaction.replace(R.id.container, historyFragment);
+            } else if (position == POS_REWARD) {
+                RewardFragment rewardFragment = new RewardFragment();
+                transaction.replace(R.id.container, rewardFragment);
+            } else if (position == POS_LEADERBOARD) {
+                LeaderboardFragment leaderBoardFragment = new LeaderboardFragment();
+                transaction.replace(R.id.container, leaderBoardFragment);
+            } else if (position == POS_PROFIL) {
+                ProfileFragment profilFragment = new ProfileFragment();
+                transaction.replace(R.id.container, profilFragment);
+            } else if (position == POS_LOGOUT) {
+                FirebaseAuth.getInstance().signOut();
+                Intent in = new Intent(this, AuthActivity.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(in);
+                finish();
+            }
+        }else{
+            if (position == POS_CLOSE) {
+                slidingRootNav.closeMenu();
+            } else if (position == POS_HOME) {
+                HomeFragment homeFragment = new HomeFragment();
+                transaction.replace(R.id.container, homeFragment);
+            } else if (position == POS_HISTORY) {
+                startActivity(new Intent(this, AuthActivity.class));
+            } else if (position == POS_REWARD) {
+                startActivity(new Intent(this, AuthActivity.class));
+            } else if (position == POS_LEADERBOARD) {
+                startActivity(new Intent(this, AuthActivity.class));
+            } else if (position == POS_PROFIL) {
+                startActivity(new Intent(this, AuthActivity.class));
+            }
         }
-
         slidingRootNav.closeMenu();
         transaction.addToBackStack(null);
         transaction.commit();
-
 
     }
 
@@ -465,7 +455,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
     private void checkUser() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user != null) {
             Toast.makeText(this, "Ada user", Toast.LENGTH_LONG).show();
             DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
@@ -487,6 +477,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
             list.setAdapter(adapter);
 
             adapter.setSelected(POS_HOME);
+
         } else {
             Toast.makeText(this, "Tidak ada user", Toast.LENGTH_LONG).show();
             DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
@@ -508,5 +499,50 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
             adapter.setSelected(POS_HOME);
         }
+    }
+
+    private void checkUserLocation() {
+        if (user != null) {
+            reference = FirebaseFirestore.getInstance().collection("place");
+            reference.get().addOnCompleteListener (new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+
+                    if (!checkPermissions()) {
+                        mPendingGeofenceTask = PendingGeofenceTask.ADD;
+                        requestPermissions();
+                        return;
+                    }
+
+                    for (DocumentSnapshot document : task.getResult()){
+                        BAY_AREA_LANDMARKS.put(document.getString("title"), new LatLng(Double.valueOf(document.getString("latitude")), Double.valueOf(document.getString("longitude"))));
+                    }
+
+                    //GEOFENCE
+                    populateGeofenceList(BAY_AREA_LANDMARKS);
+
+                    Log.d(TAG, BAY_AREA_LANDMARKS.toString());
+
+                    addGeofences();
+                    performPendingGeofenceTask();
+
+                }});
+        }
+    }
+
+
+    private class FetchFeed extends AsyncTask<Void, Void, Void>
+    {
+
+        protected Void doInBackground(Void... params)
+        {
+
+            return null;
+        }
+        protected void onPostExecute(Void param)
+        {
+            checkUser();
+        }
+
     }
 }

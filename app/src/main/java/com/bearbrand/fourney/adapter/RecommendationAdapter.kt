@@ -49,6 +49,11 @@ class RecommendationAdapter(options: FirestoreRecyclerOptions<Place>, latitude: 
                 if(position != RecyclerView.NO_POSITION && listener != null)
                     listener!!.onItemClick(snapshots.getSnapshot(position), position)
             }
+            risk?.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION && listener != null)
+                    listener!!.onInfoClick(snapshots.getSnapshot(position), position)
+            }
         }
 
     }

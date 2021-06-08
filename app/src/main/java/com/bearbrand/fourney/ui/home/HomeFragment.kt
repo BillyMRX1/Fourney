@@ -49,10 +49,7 @@ class HomeFragment : Fragment() {
             val intent = Intent(context, AuthActivity::class.java)
             startActivity(intent)
         }
-        binding.cardRecommendation.setOnClickListener {
-            startActivity(Intent(context, RecommendationActivity::class.java))
 
-        }
         return binding.root
     }
 
@@ -74,12 +71,19 @@ class HomeFragment : Fragment() {
                 val styledText = "Halo, <font color='#2D74FF'>$name</font>"
                 binding.tvHelloName.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE)
 
+                binding.cardRecommendation.setOnClickListener {
+                    startActivity(Intent(context, RecommendationActivity::class.java))
+                }
+
                 binding.tvLogin.visibility = View.GONE
             }.addOnFailureListener {
                 Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             }
         }else{
             name = "Pengunjung"
+            binding.cardRecommendation.setOnClickListener {
+                startActivity(Intent(context, AuthActivity::class.java))
+            }
         }
     }
 
@@ -105,6 +109,10 @@ class HomeFragment : Fragment() {
         adapter?.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(snapshot: DocumentSnapshot, position: Int) {
 
+            }
+
+            override fun onInfoClick(snapshot: DocumentSnapshot, position: Int) {
+                TODO("Not yet implemented")
             }
         })
 
