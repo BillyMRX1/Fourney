@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
@@ -29,12 +30,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TabWidget;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bearbrand.fourney.activity.AuthActivity;
@@ -72,13 +77,20 @@ import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 import org.jetbrains.annotations.NotNull;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener, OnCompleteListener<Void>{
     private static final int POS_CLOSE = 0;
@@ -137,6 +149,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         mGeofenceList = new ArrayList<>();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+        new FetchFeed().execute();
 
     }
 
@@ -153,7 +166,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         if (!checkPermissions()) {
             requestPermissions();
         } else {
-            checkUser();
+            checkUserLocation();
 
         }
     }
@@ -465,6 +478,31 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
             adapter.setSelected(POS_HOME);
 
+        } else {
+            Toast.makeText(this, "Tidak ada user", Toast.LENGTH_LONG).show();
+            DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
+                    createItemFor(POS_CLOSE),
+                    createItemFor(POS_HOME).setChecked(true),
+                    createItemFor(POS_HISTORY),
+                    createItemFor(POS_REWARD),
+                    createItemFor(POS_LEADERBOARD),
+                    createItemFor(POS_PROFIL),
+                    new SpaceItem(260)
+            ));
+
+            adapter.setListener(this);
+
+            RecyclerView list = findViewById(R.id.list);
+            list.setNestedScrollingEnabled(false);
+            list.setLayoutManager(new LinearLayoutManager(this));
+            list.setAdapter(adapter);
+
+            adapter.setSelected(POS_HOME);
+        }
+    }
+
+    private void checkUserLocation() {
+        if (user != null) {
             reference = FirebaseFirestore.getInstance().collection("place");
             reference.get().addOnCompleteListener (new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -489,26 +527,22 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     performPendingGeofenceTask();
 
                 }});
-        } else {
-            Toast.makeText(this, "Tidak ada user", Toast.LENGTH_LONG).show();
-            DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
-                    createItemFor(POS_CLOSE),
-                    createItemFor(POS_HOME).setChecked(true),
-                    createItemFor(POS_HISTORY),
-                    createItemFor(POS_REWARD),
-                    createItemFor(POS_LEADERBOARD),
-                    createItemFor(POS_PROFIL),
-                    new SpaceItem(260)
-            ));
-
-            adapter.setListener(this);
-
-            RecyclerView list = findViewById(R.id.list);
-            list.setNestedScrollingEnabled(false);
-            list.setLayoutManager(new LinearLayoutManager(this));
-            list.setAdapter(adapter);
-
-            adapter.setSelected(POS_HOME);
         }
+    }
+
+
+    private class FetchFeed extends AsyncTask<Void, Void, Void>
+    {
+
+        protected Void doInBackground(Void... params)
+        {
+
+            return null;
+        }
+        protected void onPostExecute(Void param)
+        {
+            checkUser();
+        }
+
     }
 }
