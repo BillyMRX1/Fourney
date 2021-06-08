@@ -45,7 +45,23 @@ class ProfileViewModel : ViewModel() {
                     userRef.update("avatar", profilePic)
                 }
             }
+    }
+    fun updateUser(user: UserModel) {
+        val storyCollectionRef = Firebase.firestore.collection("users")
+        CoroutineScope(Dispatchers.IO).launch {
+            val querySnapshot = storyCollectionRef
+                .whereEqualTo("email", user.email)
+                .whereEqualTo("uid", user.uid)
+                .get()
+                .await()
+            for (document in querySnapshot) {
+                val userRef = storyCollectionRef.document(document.id)
+                userRef.update("address", user.address)
+                userRef.update("name", user.name)
+                userRef.update("phone", user.phone)
+
+            }
+        }
 
     }
-
 }

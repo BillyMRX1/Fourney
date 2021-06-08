@@ -2,6 +2,8 @@ package com.bearbrand.fourney.ui.profile
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,8 +15,11 @@ import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import androidx.fragment.app.activityViewModels
 import com.bearbrand.fourney.R
+import com.bearbrand.fourney.activity.AuthActivity
 import com.bearbrand.fourney.databinding.FragmentProfileBinding
 import com.bearbrand.fourney.model.UserModel
+import com.bearbrand.fourney.ui.profile.editprofile.EditProfilActivity
+import com.bearbrand.fourney.ui.profile.resetpassword.ResetPasswordActivity
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
@@ -97,6 +102,29 @@ class ProfileFragment : Fragment() {
                 btnUbahFoto.setOnClickListener {
                     findPhoto()
                     uploadImage()
+                }
+                btnEditProfile.setOnClickListener {
+                    val intent = Intent(requireContext(),EditProfilActivity::class.java)
+                    intent.putExtra(EditProfilActivity.USER,user)
+                    startActivity(intent)
+                }
+                btnUbahPassword.setOnClickListener {
+                    val intent = Intent(requireContext(),ResetPasswordActivity::class.java)
+                    intent.putExtra(ResetPasswordActivity.USER,user.email)
+                    startActivity(intent)
+                }
+
+                btnLogout.setOnClickListener {
+                    val dialog = AlertDialog.Builder(requireContext())
+                    dialog.setTitle("Log out")
+                    dialog.setMessage("Apakah kamu yakin ingin keluar?")
+                    dialog.setPositiveButton("Iya") { dialog: DialogInterface?, which: Int ->
+                        firebaseAuth.signOut()
+                        startActivity(Intent(requireContext(), AuthActivity::class.java))
+
+                    }
+                    dialog.setNegativeButton("Tidak") { dialog: DialogInterface?, which: Int -> }
+                    dialog.show()
                 }
 
 

@@ -1,5 +1,9 @@
 package com.bearbrand.fourney.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class UserModel(
     val name: String = "",
     val uid: String = "",
@@ -9,8 +13,4 @@ data class UserModel(
     val avatar:String = "",
     val address: String = "",
     val phone: String = "",
-
-
-
-
-)
+):Parcelable
