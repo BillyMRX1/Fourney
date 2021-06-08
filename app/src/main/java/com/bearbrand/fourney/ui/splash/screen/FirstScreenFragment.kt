@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.FragmentFirstScreenBinding
 
@@ -26,6 +24,7 @@ class FirstScreenFragment : Fragment() {
 
         binding.btnMulaiSekarang.setOnClickListener {
             findNavController().navigate(R.id.action_firstScreenFragment_to_viewPagerFragment)
+//            startActivity(Intent(context, ViewPagerActivity::class.java))
         }
         return binding.root
     }
