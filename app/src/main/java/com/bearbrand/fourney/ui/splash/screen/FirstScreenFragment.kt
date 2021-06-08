@@ -24,7 +24,6 @@ class FirstScreenFragment : Fragment() {
 
         binding.btnMulaiSekarang.setOnClickListener {
             findNavController().navigate(R.id.action_firstScreenFragment_to_viewPagerFragment)
-//            startActivity(Intent(context, ViewPagerActivity::class.java))
         }
         return binding.root
     }
