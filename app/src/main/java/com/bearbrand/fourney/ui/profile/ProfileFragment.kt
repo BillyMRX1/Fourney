@@ -89,7 +89,6 @@ class ProfileFragment : Fragment() {
             user.let {
                 val imageAvatar =
                     if (it.avatar.isNotEmpty()) it.avatar else R.drawable.ic_base_avatar
-                Log.d("ProfileFragment","$imageAvatar")
                 Glide.with(requireActivity())
                     .load(imageAvatar)
                     .placeholder(R.drawable.no_image)

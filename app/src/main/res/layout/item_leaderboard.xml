@@ -26,14 +26,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="1" />
+        <ImageView
+            android:visibility="invisible"
+            android:id="@+id/tv_rank_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/work_sans"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_profile"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="52dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_rank"
-            app:layout_constraintStart_toEndOf="@+id/tv_rank"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_rank"
             tools:src="@drawable/no_image" />
 
