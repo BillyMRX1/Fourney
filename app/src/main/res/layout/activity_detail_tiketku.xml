@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
     android:background="@drawable/background"
-    tools:context=".ui.reward.detail.DetailTicketActivity">
+    android:padding="24dp"
+    tools:context=".ui.reward.tiketku.detail.DetailMyTicketActivity">
+
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="24dp"
@@ -47,10 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
-            tools:text="Discount 25%"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Discount 25%" />
 
         <TextView
             android:id="@+id/tv_voucher_place"
@@ -58,10 +59,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            tools:text="Tiket Masuk Pariwisata"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/tv_voucher_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_voucher_title" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_voucher_title"
+            tools:text="Tiket Masuk Pariwisata" />
 
         <TextView
             android:id="@+id/textView"
@@ -80,10 +81,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            tools:text="December 25,2021"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:text="December 25,2021" />
 
 
         <ImageView
@@ -91,31 +92,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="28dp"
             android:src="@drawable/ic_logo_tiket"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.333" />
 
-        <TextView
-            android:id="@+id/tv_coin"
-            style="@style/blue_m_14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            tools:text="100"
-            app:layout_constraintEnd_toEndOf="@+id/logo_tiket"
-            app:layout_constraintLeft_toLeftOf="@id/logo_tiket"
-            app:layout_constraintTop_toBottomOf="@id/logo_tiket" />
-
-        <TextView
-            android:id="@+id/textViewCp"
-            style="@style/blue_m_12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CP"
-            app:layout_constraintEnd_toEndOf="@+id/tv_coin"
-            app:layout_constraintLeft_toLeftOf="@id/tv_coin"
-            app:layout_constraintTop_toBottomOf="@id/tv_coin" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -143,11 +126,11 @@
         tools:text="1. Dapatkan Diskon" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_use_voucher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Redeem"
-
+        android:text="Gunakan Voucher"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"

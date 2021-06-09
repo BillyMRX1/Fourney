@@ -1,29 +1,31 @@
-package com.bearbrand.fourney.ui.reward.detail
+package com.bearbrand.fourney.ui.reward.tiketku.detail
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.ActivityDetailTicketBinding
+import com.bearbrand.fourney.databinding.ActivityDetailTiketkuBinding
 import com.bearbrand.fourney.model.TiketModel
+import com.bearbrand.fourney.ui.reward.detail.DetailTicketActivity
 
-class DetailTicketActivity : AppCompatActivity() {
+class DetailMyTicketActivity : AppCompatActivity() {
     companion object {
-        const val TIKET = "tiket"
+        const val TIKETKU = "tiketku"
     }
 
-    private lateinit var binding: ActivityDetailTicketBinding
+    private lateinit var binding: ActivityDetailTiketkuBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailTicketBinding.inflate(layoutInflater)
+        binding = ActivityDetailTiketkuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val intentValue = intent.getParcelableExtra<TiketModel>(TIKET)
+        val intentValue = intent.getParcelableExtra<TiketModel>(TIKETKU)
         with(binding) {
             intentValue?.let {
 
                 tvVoucherPlace.text = it.voucherPlace
                 tvValidUntil.text = it.validUntil
-                tvCoin.text = it.coin.toString()
                 tvVoucherTitle.text = it.voucherTitle
                 when (it.background) {
                     "bg_tiket" -> constraintLayout.setBackgroundResource(R.drawable.bg_tiket)
@@ -47,6 +49,9 @@ class DetailTicketActivity : AppCompatActivity() {
                 }
                 tvSdk.text = snk
 
+            }
+            btnUseVoucher.setOnClickListener {
+                startActivity(Intent(this@DetailMyTicketActivity, UsedTicketActivity::class.java))
             }
             btnBack.setOnClickListener {
                 finish()

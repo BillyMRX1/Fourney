@@ -1,4 +1,4 @@
-package com.bearbrand.fourney.ui.reward
+package com.bearbrand.fourney.ui.reward.tiketku
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -6,17 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.ItemKuponBinding
+import com.bearbrand.fourney.databinding.ItemKuponkuBinding
 import com.bearbrand.fourney.model.TiketModel
 import com.bearbrand.fourney.ui.reward.detail.DetailTicketActivity
+import com.bearbrand.fourney.ui.reward.tiketku.detail.DetailMyTicketActivity
 
 
-class TiketAdapter(private val listItem: ArrayList<TiketModel>) :
-    RecyclerView.Adapter<TiketAdapter.ListViewHolder>() {
-
+class TiketkuAdapter(private val listItem: ArrayList<TiketModel>) :
+    RecyclerView.Adapter<TiketkuAdapter.ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val itemBinding =
-            ItemKuponBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemKuponkuBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ListViewHolder(itemBinding)
     }
 
@@ -27,11 +28,10 @@ class TiketAdapter(private val listItem: ArrayList<TiketModel>) :
     }
 
 
-    inner class ListViewHolder(private val binding: ItemKuponBinding) :
+    inner class ListViewHolder(private val binding: ItemKuponkuBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: TiketModel) {
             with(binding) {
-                tvCoin.text = item.coin.toString()
                 tvValidUntil.text = item.validUntil
                 tvVoucherPlace.text = item.voucherPlace
                 tvVoucherTitle.text = item.voucherTitle
@@ -44,8 +44,8 @@ class TiketAdapter(private val listItem: ArrayList<TiketModel>) :
 
             }
             binding.btnDetail.setOnClickListener {
-                val intent = Intent(itemView.context, DetailTicketActivity::class.java)
-                intent.putExtra(DetailTicketActivity.TIKET, item)
+                val intent = Intent(itemView.context, DetailMyTicketActivity::class.java)
+                intent.putExtra(DetailMyTicketActivity.TIKETKU, item)
                 itemView.context.startActivity(intent)
             }
 

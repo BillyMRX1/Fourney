@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fourney">
-        <activity android:name=".ui.reward.detail.DetailTicketActivity"></activity>
+        <activity android:name=".ui.reward.tiketku.detail.UsedTicketActivity"></activity>
+        <activity android:name=".ui.reward.tiketku.detail.DetailMyTicketActivity" />
+        <activity android:name=".ui.reward.tiketku.MyTicketActivity" />
+        <activity android:name=".ui.reward.detail.DetailTicketActivity" />
         <activity android:name=".ui.profile.resetpassword.ResetPasswordActivity" />
         <activity android:name=".ui.profile.editprofile.EditProfilActivity" />
         <activity

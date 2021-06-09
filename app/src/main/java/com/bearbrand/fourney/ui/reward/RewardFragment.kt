@@ -1,5 +1,6 @@
 package com.bearbrand.fourney.ui.reward
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.FragmentRewardBinding
+import com.bearbrand.fourney.ui.reward.tiketku.MyTicketActivity
 import com.bearbrand.fourney.utils.DummyTiket
 
 
@@ -30,16 +32,15 @@ class RewardFragment : Fragment() {
         with(binding) {
             val listItem = DummyTiket.getTiket()
             adapter = TiketAdapter(listItem)
-            adapter.onItemClick = { selectedData ->
-
-            }
-
             rvTiket.adapter = adapter
             adapter.notifyDataSetChanged()
             binding.rvTiket.layoutManager = LinearLayoutManager(
                 activity,
                 LinearLayoutManager.VERTICAL, false
             )
+            binding.cardMyCupon.setOnClickListener{
+                startActivity(Intent(requireContext(),MyTicketActivity::class.java))
+            }
         }
     }
 }
