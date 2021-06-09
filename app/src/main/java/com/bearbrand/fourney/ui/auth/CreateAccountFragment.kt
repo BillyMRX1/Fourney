@@ -116,8 +116,8 @@ class CreateAccountFragment : Fragment(), View.OnClickListener {
             email,
             "",
             address,
-            location,g
-            phone,
+            location,
+            phone
         )
         data.set(userData).addOnCompleteListener {
             Toast.makeText(context, "Register Berhasil", Toast.LENGTH_SHORT).show()

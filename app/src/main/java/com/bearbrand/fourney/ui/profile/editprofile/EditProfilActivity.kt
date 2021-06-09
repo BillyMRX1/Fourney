@@ -41,6 +41,7 @@ class EditProfilActivity : AppCompatActivity() {
                         avatar = item.avatar,
                         address = etAddress.text.toString(),
                         phone = etPhoneNumber.text.toString(),
+                        location = item.location
                     )
                     viewModel.updateUser(newData)
                     Toast.makeText(this@EditProfilActivity,"Perubahan di Simpan",Toast.LENGTH_LONG).show()

@@ -12,6 +12,6 @@ data class UserModel(
     val email: String = "",
     val avatar:String = "",
     val address: String = "",
-    val location: String,
+    val location: String = "",
     val phone: String = "",
 ):Parcelable
