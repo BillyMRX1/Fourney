@@ -18,6 +18,7 @@ class AdvertiseAdapter(options: FirestoreRecyclerOptions<Place>) : FirestoreRecy
     private var mOptions: FirestoreRecyclerOptions<Place>? = null
     private var mSnapshot: ObservableSnapshotArray<Place>? = null
 
+
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var image: ImageView? = null
 

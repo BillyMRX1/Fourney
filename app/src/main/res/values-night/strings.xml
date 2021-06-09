@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fourney</string>
+    <string name="icon">icon</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tantangan">Tantangan</string>
+    <string name="challenge_start">Yuk, selesaikan tantangan yang tersedia untukmu, berikut ini.</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur eleifend sem, in varius risus. Suspendisse potenti. In pharetra est non nibh tincidunt dapibus. Cras maximus lectus non lacinia cursus. Cras ex risus, viverra at nunc in, sodales facilisis dui. Suspendisse potenti. Ut auctor, dui ut imperdiet lacinia, enim massa laoreet mi, nec viverra risus risus at ante. Nulla tincidunt felis vel neque accumsan pellentesque. Etiam ullamcorper, massa vel dapibus varius, felis lorem tempor ex, a sollicitudin odio ipsum sed ipsum. Vivamus scelerisque imperdiet nisi et auctor. In dignissim magna felis, non ultrices nulla iaculis congue. Pellentesque mattis turpis nibh, eu posuere libero pellentesque id.</string>
+    <string name="selengkapnya">Selengkapnya</string>
+    <string name="error_challenge">Kamu sedang tidak berada di tempat wisata. Kunjungi tempat wisata yang aman buatmu, dan jalankan misinya</string>
+    <string name="permission_rationale">\"Location permission is needed for core functionality\"</string>
+    <string name="insufficient_permissions">Insufficient permission</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality</string>
+    <string name="settings">Settings</string>
+
+    <!-- Transition type strings -->
+    <string name="geofence_transition_entered">Entered</string>
+    <string name="geofence_transition_exited">Exited</string>
+    <string name="unknown_geofence_transition">Unknown Transition</string>
+
+    <string name="geofence_transition_notification_text">
+        Click notification to return to app
+    </string>
+    <string name="geofence_transition_invalid_type">
+        Geofence transition error: invalid transition type %1$d
+    </string>
+
+    <!-- Error strings -->
+    <string name="geofence_not_available">Geofence service is not available now</string>
+    <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
+    <string name="geofence_too_many_pending_intents">
+        You have provided too many PendingIntents to the addGeofences() call
+    </string>
+    <string name="unknown_geofence_error">
+        Unknown error: the Geofence service is not available now
+    </string>
+    <string name="geofences_added">Geofences Added</string>
+</resources>

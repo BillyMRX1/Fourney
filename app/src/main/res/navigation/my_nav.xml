@@ -34,6 +34,12 @@
         <action
             android:id="@+id/action_viewPagerFragment_to_menuActivity"
             app:destination="@id/menuActivity" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
     <fragment
         android:id="@+id/startAuthFragment"
@@ -42,7 +48,9 @@
         tools:layout="@layout/fragment_start_auth">
         <action
             android:id="@+id/action_startAuthFragment_to_loginFragment2"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/authActivity"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_startAuthFragment_to_registerFragment2"
             app:destination="@id/registerFragment" />
@@ -93,4 +101,8 @@
             android:id="@+id/action_createAccountFragment_to_menuActivity"
             app:destination="@id/menuActivity" />
     </fragment>
+    <activity
+        android:id="@+id/authActivity"
+        android:name="com.bearbrand.fourney.activity.AuthActivity"
+        android:label="AuthActivity" />
 </navigation>

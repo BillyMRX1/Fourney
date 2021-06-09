@@ -16,6 +16,8 @@ class AuthActivity : AppCompatActivity() {
         val mFragmentManager = supportFragmentManager
         val mFragmentAuth = StartAuthFragment()
 
+
+
         mFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerView, mFragmentAuth, StartAuthFragment::class.java.simpleName)
             commit()

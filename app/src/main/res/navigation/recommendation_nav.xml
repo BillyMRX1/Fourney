@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recommendation_nav"
+    app:startDestination="@id/touristAttractionFragment">
+
+    <fragment
+        android:id="@+id/touristAttractionFragment"
+        android:name="com.bearbrand.fourney.ui.recommendation.TouristAttractionFragment"
+        android:label="TouristAttractionFragment"
+        tools:layout="@layout/fragment_tourist_attraction">
+        <action
+            android:id="@+id/action_touristAttractionFragment_to_detailPlaceFragment2"
+            app:destination="@id/detailPlaceFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailPlaceFragment2"
+        android:name="com.bearbrand.fourney.ui.recommendation.DetailPlaceFragment"
+        android:label="fragment_detail_place"
+        tools:layout="@layout/fragment_detail_place" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
+</navigation>
