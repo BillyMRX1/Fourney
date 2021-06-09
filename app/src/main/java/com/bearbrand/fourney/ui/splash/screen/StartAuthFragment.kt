@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import com.bearbrand.fourney.MenuActivity
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.FragmentStartAuthBinding
 import com.bearbrand.fourney.ui.auth.LoginFragment
 import com.bearbrand.fourney.ui.auth.RegisterFragment
+import com.bearbrand.fourney.ui.splash.ViewPagerFragmentDirections
 
 
 class StartAuthFragment : Fragment() {
@@ -39,15 +41,17 @@ class StartAuthFragment : Fragment() {
         }
 
         binding.btnMasuk.setOnClickListener {
-
-            val mFragmentMasuk = LoginFragment()
+            if(openedMain()){
+                val mFragmentMasuk = LoginFragment()
 
                 mFragmentManager?.beginTransaction()?.apply {
                     replace(R.id.fragmentContainerView, mFragmentMasuk, LoginFragment::class.java.simpleName)
                     addToBackStack(null)
                     commit()
                 }
-//
+            }else{
+                findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragmentToLoginFragment())
+            }
         }
         binding.tvLewati.setOnClickListener {
             val intent =
@@ -73,6 +77,11 @@ class StartAuthFragment : Fragment() {
         val editor = sharedPref.edit()
         editor.putBoolean("Finished", true)
         editor.apply()
+    }
+
+    private fun openedMain(): Boolean{
+        val sharedPref = requireActivity().getSharedPreferences("openMain", Context.MODE_PRIVATE)
+        return sharedPref.getBoolean("Finished", false)
     }
 
 //    private fun startAuthOpened() {

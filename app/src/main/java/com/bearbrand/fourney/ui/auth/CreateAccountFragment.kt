@@ -48,6 +48,9 @@ class CreateAccountFragment : Fragment(), View.OnClickListener {
             binding.tilPassword.error = null
             binding.tilPassword.isErrorEnabled
         }
+        binding.ivBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         return binding.root
     }

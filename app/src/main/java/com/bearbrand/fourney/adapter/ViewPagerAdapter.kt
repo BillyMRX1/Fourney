@@ -12,17 +12,35 @@ import com.bearbrand.fourney.ui.splash.screen.ThirdScreenFragment
 
 
 class ViewPagerAdapter(fm: FragmentManager): FragmentPagerAdapter(fm) {
-    private val fragmentList = listOf(
-        SecondScreenFragment(),
-        ThirdScreenFragment(),
-        StartAuthFragment()
-    )
-    override fun getCount(): Int {
-        return fragmentList.size
-    }
+    private val fragmentList: MutableList<Fragment> = ArrayList()
 
     override fun getItem(position: Int): Fragment {
-        return fragmentList[position]
+        var fragment: Fragment? = null
+        when (position) {
+            0 -> fragment = SecondScreenFragment()
+            1 -> fragment = ThirdScreenFragment()
+            2 -> fragment = StartAuthFragment()
+        }
+        return fragment as Fragment
     }
+
+    override fun getCount(): Int = fragmentList.size
+
+    fun addFragment(fragment: Fragment) {
+        fragmentList.add(fragment)
+    }
+
+//    private val fragmentList = listOf(
+//        SecondScreenFragment(),
+//        ThirdScreenFragment(),
+//        StartAuthFragment()
+//    )
+//    override fun getCount(): Int {
+//        return fragmentList.size
+//    }
+//
+//    override fun getItem(position: Int): Fragment {
+//        return fragmentList[position]
+//    }
 
 }
