@@ -60,7 +60,6 @@ class LeaderboardFragment : Fragment() {
         }
     }
 
-
     private fun setListLeaderboard(listItem: ArrayList<LeaderboardModel>) {
         with(binding) {
             adapter = LeaderboardAdapter(listItem)

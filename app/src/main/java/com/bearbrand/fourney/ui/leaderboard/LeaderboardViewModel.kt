@@ -16,8 +16,6 @@ import kotlinx.coroutines.tasks.await
 
 class LeaderboardViewModel : ViewModel() {
 
-
-
     fun getLeaderboard(uid: String): Pair<LiveData<ArrayList<LeaderboardModel>>, LiveData<LeaderboardModel>> {
         val listLeaderBoard = MutableLiveData<ArrayList<LeaderboardModel>>()
         val currentUser = MutableLiveData<LeaderboardModel>()
