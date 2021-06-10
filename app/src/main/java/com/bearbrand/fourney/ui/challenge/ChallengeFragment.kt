@@ -22,6 +22,8 @@ class ChallengeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var reference: CollectionReference
     private lateinit var referenceUser: DocumentReference
+    private lateinit var data: DocumentReference
+    private val firestore = FirebaseFirestore.getInstance()
     var latitude: Double = 0.0
     var longitude: Double = 0.0
 
@@ -37,6 +39,20 @@ class ChallengeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadData()
+        loadUser()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun loadUser() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val uid = user.uid
+            data = firestore.collection("users").document(uid)
+            data.get().addOnSuccessListener {
+                binding.viewChallenge.tvPoin.text = it.getLong("point").toString() + " CP"
+                binding.viewChallenge.tvXp.text = it.getLong("xp").toString() + " XP"
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -57,7 +73,7 @@ class ChallengeFragment : Fragment() {
                     binding.viewChallenge.tvRisk.text =
                         data.documents[0].getString("risk") + " Risk"
                     binding.viewChallenge.tvIconicObject.text =
-                        "0 / " + data.documents[0].getString("numObject") + " Objek Ikonik"
+                        "0 / " + data.documents[0].getLong("numObject") + " Objek Ikonik"
                     binding.viewChallenge.root.visibility = View.VISIBLE
                     binding.viewChallenge.btnNext.setOnClickListener {
                         findNavController().navigate(
