@@ -38,6 +38,7 @@
                 android:src="@drawable/ic_coin" />
 
             <TextView
+                android:id="@+id/tv_poin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -51,6 +52,7 @@
                 android:src="@drawable/ic_xp" />
 
             <TextView
+                android:id="@+id/tv_xp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -105,13 +107,17 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_hint"
         tools:listitem="@layout/item_challenge_detail" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_selesai"
+        style="@style/white_b_18"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/color_state_material_button"
+        android:padding="15dp"
         android:text="Selesai"
         android:textAllCaps="false"
+        app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/rv_places"
         app:layout_constraintStart_toStartOf="@+id/rv_places" />

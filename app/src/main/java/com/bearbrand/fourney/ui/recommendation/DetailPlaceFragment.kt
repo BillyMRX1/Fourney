@@ -76,17 +76,21 @@ class DetailPlaceFragment : Fragment() {
 
         val ref = FirebaseFirestore.getInstance().collection("history")
         val data = ref.document(uid!!)
-        data.get().addOnSuccessListener {
+        val query = ref.whereEqualTo("idUser", uid)
+        query.addSnapshotListener { document, _ ->
             Log.d("ID REF", data.id)
-            if(data.id!=uid){
-                data.set(historyData).addOnCompleteListener {
+            if(document != null){
+                if(document.size() > 0){
+                    data.update("place", FieldValue.arrayUnion(hashmap)).addOnCompleteListener {
+                        Toast.makeText(context, "Data berhasil di update", Toast.LENGTH_SHORT).show()
+                    }
+                }else{
+                     data.set(historyData).addOnCompleteListener {
                     Toast.makeText(context, "History Berhasil", Toast.LENGTH_SHORT).show()
                     //intent
                 }
-            }else{
-                data.update("place", FieldValue.arrayUnion(hashmap)).addOnCompleteListener {
-                    Toast.makeText(context, "Data berhasil di update", Toast.LENGTH_SHORT).show()
                 }
+
             }
         }
 //        val query = ref.whereArrayContains("idPlace", args.id)
