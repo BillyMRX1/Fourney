@@ -2,6 +2,8 @@ package com.bearbrand.fourney.model
 
 data class ListObject(
     var title: String = "",
-    var point: Int = 0,
-    var file: String = ""
+    var coint: Int = 0,
+    var file: String = "",
+    var desc: String = "",
+    var xp: Int = 0
 )

@@ -1,5 +1,6 @@
 package com.bearbrand.fourney.ui.recommendation
 
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import coil.load
@@ -16,15 +18,16 @@ import com.bearbrand.fourney.MenuActivity
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.adapter.ObjectAdapter
 import com.bearbrand.fourney.databinding.FragmentDetailPlaceBinding
+import com.bearbrand.fourney.model.HistoryModel
 import com.bearbrand.fourney.model.ListObject
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class DetailPlaceFragment : Fragment() {
@@ -48,9 +51,63 @@ class DetailPlaceFragment : Fragment() {
             raiseDialog(args.id)
         }
 
+        binding.btnStartChallenge.setOnClickListener {
+            addToHistory()
+        }
+
         loadDataObjects()
         return binding.root
     }
+
+    private fun addToHistory() {
+        val dfTime = SimpleDateFormat("dd/MMMM/yyyy HH:mm", Locale.ROOT)
+        val time = dfTime.format(Calendar.getInstance().time)
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        val hashmap = HashMap<String, Any?>()
+        hashmap["idPlace"] = args.id
+        hashmap["timeStart"] = time
+
+        var list = Arrays.asList(hashmap)
+        val historyData = HistoryModel(uid!!, list)
+
+        val ref = FirebaseFirestore.getInstance().collection("history")//.document(uid!!)
+        val data = ref.document(uid!!)
+        data.get().addOnSuccessListener {
+            Log.d("ID REF", data.id)
+            if(data.id!=uid){
+                data.set(historyData).addOnCompleteListener {
+                    Toast.makeText(context, "History Berhasil", Toast.LENGTH_SHORT).show()
+                    //intent
+                }
+            }else{
+                data.update("place", list).addOnCompleteListener {
+                    Toast.makeText(context, "Data berhasil di update", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+//        val query = ref.whereArrayContains("idPlace", args.id)
+//        query.addSnapshotListener { value, _ ->
+//            if(value!=null){
+//                data.update("place.timeStart", time)
+//                Toast.makeText(context, "Data berhasil di update", Toast.LENGTH_SHORT).show()
+//            }else{
+//                val hashmap = HashMap<String, Any?>()
+//                hashmap["idPlace"] = args.id
+//                hashmap["timeStart"] = time
+//
+//                var list = Arrays.asList(hashmap)
+//                val historyData = HistoryModel(uid, list)
+//                data.set(historyData).addOnCompleteListener {
+//                    Toast.makeText(context, "History Berhasil", Toast.LENGTH_SHORT).show()
+//                    //intent
+//                }
+//            }
+//        }
+
+    }
+
+
 
     private fun raiseDialog(id: String) {
         val materialBuilder = MaterialAlertDialogBuilder(requireContext()).create()
