@@ -1,5 +1,6 @@
 package com.bearbrand.fourney.ui.reward
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,7 +35,20 @@ class RewardViewModel : ViewModel() {
 
     fun getListTicket() : LiveData<ArrayList<TiketModel>>{
         val _listKupon = MutableLiveData<ArrayList<TiketModel>>()
-        _listKupon.postValue(DummyTiket.getTiket())
+        val listKupon = ArrayList<TiketModel>()
+        CoroutineScope(Dispatchers.IO).launch {
+            val querySnapshot = Firebase.firestore.collection("listKupon")
+                .get()
+                .await()
+            for (kupon in querySnapshot.documents) {
+                kupon.toObject<TiketModel>().also {
+                    listKupon.add(it!!)
+                }
+            }
+            listKupon.sortBy { it.coin }
+            _listKupon.postValue(listKupon)
+        }
+
         return _listKupon
     }
 }

@@ -5,11 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TiketModel(
-    val voucherTitle: String = "",
-    val voucherPlace:String = "",
-    val validUntil:String = "",
-    val coin:Int = 0,
-    val id:String = "",
     val background:String = "",
-) : Parcelable{
-}
+    val coin:Int = 0,
+    val validUntil:String = "",
+    val voucherPlace:String = "",
+    val voucherTitle: String = "",
+
+
+) : Parcelable
