@@ -63,7 +63,7 @@ class DetailPlaceFragment : Fragment() {
     }
 
     private fun addToHistory() {
-        val dfTime = SimpleDateFormat("dd/MMMM/yyyy HH:mm", Locale.ROOT)
+        val dfTime = SimpleDateFormat("dd/MMMM/yyyy", Locale.ROOT)
         val time = dfTime.format(Calendar.getInstance().time)
         val uid = FirebaseAuth.getInstance().currentUser?.uid
 

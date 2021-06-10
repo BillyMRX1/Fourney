@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,17 +15,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -76,6 +82,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.OnProgressListener;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.protobuf.Any;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
@@ -88,6 +95,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -95,7 +103,7 @@ import java.util.concurrent.Executors;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener, OnCompleteListener<Void>{
+public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener, OnCompleteListener<Void> {
     private static final int POS_CLOSE = 0;
     private static final int POS_HOME = 1;
     private static final int POS_HISTORY = 2;
@@ -104,8 +112,15 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int POS_PROFIL = 5;
     private static final int POS_LOGOUT = 7;
 
+    private NotificationAlarmManager alarmReceiver;
+    private static final int NOTIFICATION_ID = 1;
+    private static final String CHANNEL_ID = "channel_01";
+    private static final CharSequence CHANNEL_NAME = "dicoding channel";
+
+
     private String[] screenTitles;
     private Drawable[] screenIcons;
+    String temp = "";
 
     private SlidingRootNav slidingRootNav;
     FirebaseUser user;
@@ -123,6 +138,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private GeofencingClient mGeofencingClient;
     private ArrayList<Geofence> mGeofenceList;
     private PendingIntent mGeofencePendingIntent;
+    private PendingIntent mGeofencePendingIntentPositive;
 
     private PendingGeofenceTask mPendingGeofenceTask = PendingGeofenceTask.NONE;
     static HashMap<String, LatLng> BAY_AREA_LANDMARKS = new HashMap<>();
@@ -154,6 +170,8 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         user = FirebaseAuth.getInstance().getCurrentUser();
         new FetchFeed().execute();
 
+        alarmReceiver = new NotificationAlarmManager();
+
     }
 
 
@@ -170,7 +188,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
             requestPermissions();
         } else {
             checkUserLocation();
-
+            checkNotification();
         }
     }
 
@@ -333,7 +351,6 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -398,7 +415,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 startActivity(in);
                 finish();
             }
-        }else{
+        } else {
             if (position == POS_CLOSE) {
                 slidingRootNav.closeMenu();
             } else if (position == POS_HOME) {
@@ -468,7 +485,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     createItemFor(POS_REWARD),
                     createItemFor(POS_LEADERBOARD),
                     createItemFor(POS_PROFIL),
-                    new SpaceItem(260),
+                    new SpaceItem(100),
                     createItemFor(POS_LOGOUT)
             ));
 
@@ -490,7 +507,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     createItemFor(POS_REWARD),
                     createItemFor(POS_LEADERBOARD),
                     createItemFor(POS_PROFIL),
-                    new SpaceItem(260)
+                    new SpaceItem(100)
             ));
 
             adapter.setListener(this);
@@ -507,7 +524,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private void checkUserLocation() {
         if (user != null) {
             reference = FirebaseFirestore.getInstance().collection("place");
-            reference.get().addOnCompleteListener (new OnCompleteListener<QuerySnapshot>() {
+            reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
 
@@ -517,7 +534,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                         return;
                     }
 
-                    for (DocumentSnapshot document : task.getResult()){
+                    for (DocumentSnapshot document : task.getResult()) {
                         BAY_AREA_LANDMARKS.put(document.getString("title"), new LatLng(Double.valueOf(document.getString("latitude")), Double.valueOf(document.getString("longitude"))));
                     }
 
@@ -529,22 +546,19 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     addGeofences();
                     performPendingGeofenceTask();
 
-                }});
+                }
+            });
         }
     }
 
 
-    private class FetchFeed extends AsyncTask<Void, Void, Void>
-    {
+    private class FetchFeed extends AsyncTask<Void, Void, Void> {
 
-        protected Void doInBackground(Void... params)
-        {
-            checkNotification();
-
+        protected Void doInBackground(Void... params) {
             return null;
         }
-        protected void onPostExecute(Void param)
-        {
+
+        protected void onPostExecute(Void param) {
             checkUser();
         }
 
@@ -552,32 +566,119 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     private void checkNotification() {
         CollectionReference data = FirebaseFirestore.getInstance().collection("users");
-        Query query = data.whereEqualTo("status","Positive");
+        Query query = data.whereEqualTo("status", "Positive");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
 //                if(task.getResult()!=null){
-                for(DocumentSnapshot document: task.getResult()) {
+                for (DocumentSnapshot document : task.getResult()) {
                     Log.d("Status Positive", document.getString("uid"));
                     DocumentReference historyRef = FirebaseFirestore.getInstance().collection("history").document(document.getString("uid"));
                     historyRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
                             DocumentSnapshot doc = task.getResult();
+                            List<Object> mapPositive = new ArrayList<>();
+                            Map<String, Object> mapPlace = null;
+                            Map<String, Object> map = doc.getData();
+                            List<Object> arrayDataPositive = new ArrayList<>();
+
                             if (doc.exists()) {
-                                Map<String, Object> map = doc.getData();
-                                for (Map.Entry<String, Object> entry : map.entrySet()) {
-                                    if (entry.getKey().equals("idPlace")) {
-                                        Log.d("ID PLACE HISTORY ", entry.getValue().toString());
-                                    }
+                                List<Map<String, Object>> place = (List<Map<String, Object>>) doc.get("place");
+                                for (Map<String, Object> i : place) {
+                                    mapPositive.add(i);
                                 }
+                                for (int i = 0; i < mapPositive.size(); i++) {
+                                    //send notif
+                                    mapPlace = (HashMap<String, Object>) mapPositive.get(i);
+                                    mapPlace.remove("idObject");
+                                    arrayDataPositive.add(mapPlace);
+                                }
+                                Log.d("SEND NOTIF", arrayDataPositive.toString());
+
+                                DocumentReference historyUser = FirebaseFirestore.getInstance().collection("history").document(user.getUid());
+                                historyUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                                        DocumentSnapshot userDoc = task.getResult();
+                                        List<Object> mapUser = new ArrayList<>();
+                                        List<Object> arrayDataUser = new ArrayList<>();
+                                        Map<String, Object> mapPlaceUser = null;
+                                        if (userDoc.exists()) {
+                                            List<Map<String, Object>> place = (List<Map<String, Object>>) userDoc.get("place");
+                                            for (Map<String, Object> i : place) {
+                                                mapUser.add(i);
+                                            }
+                                            for (int i = 0; i < mapUser.size(); i++) {
+                                                //send notif
+                                                mapPlaceUser = (HashMap<String, Object>) mapUser.get(i);
+                                                mapPlaceUser.remove("idObject");
+                                                arrayDataUser.add(mapPlaceUser);
+                                            }
+
+                                            Log.d("SEND NOTIF", arrayDataUser.toString());
+
+                                            for(int i = 0; i < arrayDataPositive.size(); i++){
+                                                for (int j = 0; j<arrayDataUser.size(); j++){
+                                                    if (mapPositive.get(i).equals(mapUser.get(j))){
+                                                        //send notif
+
+                                                        sendNotification(arrayDataPositive.toString());
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
+
                 }
-//                }
             }
         });
-
     }
+
+    public void sendNotification(String data) {
+        if(!data.equals(temp)) {
+            Intent intent = new Intent(this, MenuActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(R.drawable.logo_blue)
+                    .setColor(getResources().getColor(R.color.blue))
+                    .setContentTitle("Peringatan Karantina Mandiri")
+                    .setContentText("Berdasarkan kunjunganmu tanggal 20 Maret di Batu Night Spectaculer, terindikasi pengunjung mengalami gejala Covid 19. Segera lakukan karantina mandiri.")
+                    .setAutoCancel(true);
+
+        /*
+        Untuk android Oreo ke atas perlu menambahkan notification channel
+        */
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                /* Create or update. */
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+
+                mBuilder.setChannelId(CHANNEL_ID);
+
+                if (mNotificationManager != null) {
+                    mNotificationManager.createNotificationChannel(channel);
+                }
+            }
+
+            Notification notification = mBuilder.build();
+
+            if (mNotificationManager != null) {
+                mNotificationManager.notify(NOTIFICATION_ID, notification);
+            }
+
+            temp = data;
+        }
+    }
+
+
+
 }

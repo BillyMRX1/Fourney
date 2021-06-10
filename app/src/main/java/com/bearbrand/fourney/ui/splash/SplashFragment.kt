@@ -36,7 +36,7 @@ class SplashFragment : Fragment() {
             }else{
                 findNavController().navigate(R.id.action_splashFragment_to_firstScreenFragment)
             }
-        }, 3000)
+        }, 1000)
 
         return binding.root
     }
