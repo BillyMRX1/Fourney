@@ -1,41 +1,27 @@
 package com.bearbrand.fourney.ui.challenge
 
-import android.Manifest
-import android.annotation.TargetApi
-import android.content.Intent
-import android.content.IntentSender
-import android.content.pm.PackageManager
-import android.location.Geocoder
-import android.location.Location
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import coil.load
+import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.FragmentChallengeBinding
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import java.io.IOException
-import java.util.*
 
 
 class ChallengeFragment : Fragment() {
 
     private var _binding: FragmentChallengeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var reference: CollectionReference
     private lateinit var referenceUser: DocumentReference
-    private lateinit var reference: DocumentReference
     var latitude: Double = 0.0
     var longitude: Double = 0.0
 
@@ -50,29 +36,46 @@ class ChallengeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val uid = FirebaseAuth.getInstance().currentUser?.uid
-//        referenceUser = FirebaseFirestore.getInstance().collection("users").document(uid!!)
-//        referenceUser.get().addOnSuccessListener { document ->
-//            reference = FirebaseFirestore.getInstance().collection("place").document()
-//            reference.get().addOnSuccessListener { result ->
-//                Log.d("cek lokasi", document.getString("location").toString())
-//                Log.d("cek title", result.getString("title").toString())
-//                if (document.getString("location").toString().equals(result.getString("title").toString())){
-//                    binding.btnStartChallenge.isEnabled = true
-//                }else{
-//                    binding.btnStartChallenge.isEnabled = false
-//                }
-//            }
-//
-//        }
+        loadData()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun loadData() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        referenceUser = FirebaseFirestore.getInstance().collection("users").document(uid!!)
+        referenceUser.get().addOnSuccessListener { document ->
+            val locationUser = document.getString("location").toString()
+            reference = FirebaseFirestore.getInstance().collection("place")
+            val query = reference.whereEqualTo("title", locationUser)
+            query.addSnapshotListener { data, _ ->
+                if (data != null) {
+                    binding.viewChallenge.imgLocation.load(data.documents[0].getString("image")) {
+                        placeholder(R.drawable.no_image)
+                    }
+                    binding.viewChallenge.tvName.text = data.documents[0].getString("title")
+                    binding.viewChallenge.tvDescription.text = data.documents[0].getString("desc")
+                    binding.viewChallenge.tvRisk.text =
+                        data.documents[0].getString("risk") + " Risk"
+                    binding.viewChallenge.tvIconicObject.text =
+                        "0 / " + data.documents[0].getString("numObject") + " Objek Ikonik"
+                    binding.viewChallenge.root.visibility = View.VISIBLE
+                    binding.viewChallenge.btnNext.setOnClickListener {
+                        findNavController().navigate(
+                            ChallengeFragmentDirections.actionChallengeFragmentToChallengeDetailFragment(
+                                data.documents[0].id
+                            )
+                        )
+                    }
+                } else {
+                    binding.viewError.root.visibility = View.VISIBLE
+                }
+            }
+        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object{
-        const val PLACE_ID = "place_id"
     }
 }
