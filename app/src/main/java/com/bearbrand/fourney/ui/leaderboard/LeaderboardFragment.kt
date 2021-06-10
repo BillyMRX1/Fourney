@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.FragmentLeaderboardBinding
 import com.bearbrand.fourney.model.LeaderboardModel
+import com.bearbrand.fourney.utils.DummyLeaderBoard
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 

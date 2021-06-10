@@ -58,6 +58,9 @@ class RewardFragment : Fragment() {
                 userKupon.let {
 
                     withContext(Dispatchers.Main){
+                        binding.progressBar.visibility = View.GONE
+                        binding.allLayout.visibility = View.VISIBLE
+
                         val kupon = "${userKupon.size} Kupon"
                         binding.tvKupon.text = kupon
                         binding.cardMyCupon.setOnClickListener {

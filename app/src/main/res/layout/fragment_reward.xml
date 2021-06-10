@@ -9,210 +9,233 @@
     android:layout_height="match_parent">
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/background"
->
-    <TextView
-        android:id="@+id/tv_title"
-        style="@style/black_sb_16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:text="Reward"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_info"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_kuponku" />
-
-                <TextView
-                    style="@style/black_r_10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="2dp"
-                    android:text="Kuponku" />
-
-                <TextView
-                    android:id="@+id/tv_kupon"
-                    style="@style/black_m_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    tools:text="0 Kupon" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:background="@color/gray" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_coin" />
-
-                <TextView
-                    style="@style/black_r_10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="2dp"
-                    android:text="Coinku" />
-
-                <TextView
-                    android:id="@+id/tv_coin"
-                    style="@style/black_m_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    tools:text="150 CP" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:background="@color/gray" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_tantanganku" />
-
-                <TextView
-                    style="@style/black_r_10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="2dp"
-                    android:text="Tantanganku" />
-
-                <TextView
-                    android:id="@+id/tv_tantanganku"
-                    style="@style/black_m_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    tools:text="2 Tantangan" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_my_cupon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_info">
+        android:background="@drawable/background">
 
         <TextView
-
-            android:padding="18dp"
-            android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:text="Lihat Semua Kuponku"
-            style="@style/black_sb_14"
-            android:drawableTint="@color/black"
-            android:drawablePadding="24dp"
+            android:id="@+id/tv_title"
+            style="@style/black_sb_16"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:drawableStartCompat="@drawable/ic_kuponku_26"
-            app:drawableEndCompat="@drawable/ic_next" />
-    </androidx.cardview.widget.CardView>
+            android:layout_marginTop="22dp"
+            android:text="Reward"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_header_kupon"
-        style="@style/black_sb_16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:text="Kupon yang Tersedia"
-        app:layout_constraintStart_toStartOf="@+id/card_my_cupon"
-        app:layout_constraintTop_toBottomOf="@+id/card_my_cupon" />
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="125dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView2"
-        style="@style/gray_m_14"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="48dp"
-        android:text="Klaim hadiah dengan menukarkan point yang kamu kumpulkan ."
-        app:layout_constraintEnd_toEndOf="@+id/card_my_cupon"
-        app:layout_constraintStart_toStartOf="@+id/tv_header_kupon"
-        app:layout_constraintTop_toBottomOf="@+id/tv_header_kupon" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/all_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_tiket"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/item_kupon"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                app:cardCornerRadius="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_kuponku" />
+
+                        <TextView
+                            style="@style/black_r_10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="2dp"
+                            android:text="Kuponku" />
+
+                        <TextView
+                            android:id="@+id/tv_kupon"
+                            style="@style/black_m_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            tools:text="0 Kupon" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:background="@color/gray" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_coin" />
+
+                        <TextView
+                            style="@style/black_r_10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="2dp"
+                            android:text="Coinku" />
+
+                        <TextView
+                            android:id="@+id/tv_coin"
+                            style="@style/black_m_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            tools:text="150 CP" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:background="@color/gray" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_tantanganku" />
+
+                        <TextView
+                            style="@style/black_r_10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="2dp"
+                            android:text="Tantanganku" />
+
+                        <TextView
+                            android:id="@+id/tv_tantanganku"
+                            style="@style/black_m_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            tools:text="2 Tantangan" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_my_cupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="24dp"
+                app:cardCornerRadius="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_info">
+
+                <TextView
+
+                    style="@style/black_sb_14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="24dp"
+                    android:drawableTint="@color/black"
+                    android:gravity="center_vertical"
+                    android:padding="18dp"
+                    android:text="Lihat Semua Kuponku"
+                    app:drawableEndCompat="@drawable/ic_next"
+                    app:drawableStartCompat="@drawable/ic_kuponku_26" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_header_kupon"
+                style="@style/black_sb_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:text="Kupon yang Tersedia"
+                app:layout_constraintStart_toStartOf="@+id/card_my_cupon"
+                app:layout_constraintTop_toBottomOf="@+id/card_my_cupon" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/gray_m_14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="48dp"
+                android:text="Klaim hadiah dengan menukarkan point yang kamu kumpulkan ."
+                app:layout_constraintEnd_toEndOf="@+id/card_my_cupon"
+                app:layout_constraintStart_toStartOf="@+id/tv_header_kupon"
+                app:layout_constraintTop_toBottomOf="@+id/tv_header_kupon" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_tiket"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                tools:listitem="@layout/item_kupon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
