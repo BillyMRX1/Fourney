@@ -35,6 +35,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.ChallengeActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".MenuActivity"
             android:screenOrientation="portrait"

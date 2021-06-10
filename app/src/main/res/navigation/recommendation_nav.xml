@@ -25,5 +25,17 @@
         <argument
             android:name="position"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_detailPlaceFragment2_to_challengeDetailFragment"
+            app:destination="@id/challengeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/challengeDetailFragment"
+        android:name="com.bearbrand.fourney.ui.challenge.ChallengeDetailFragment"
+        android:label="fragment_challenge_detail"
+        tools:layout="@layout/fragment_challenge_detail" >
+        <argument
+            android:name="id"
+            app:argType="string" />
     </fragment>
 </navigation>

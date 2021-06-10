@@ -1,6 +1,5 @@
 package com.bearbrand.fourney.ui.recommendation
 
-import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -12,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.bearbrand.fourney.MenuActivity
@@ -21,13 +21,14 @@ import com.bearbrand.fourney.databinding.FragmentDetailPlaceBinding
 import com.bearbrand.fourney.model.HistoryModel
 import com.bearbrand.fourney.model.ListObject
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class DetailPlaceFragment : Fragment() {
@@ -53,9 +54,11 @@ class DetailPlaceFragment : Fragment() {
 
         binding.btnStartChallenge.setOnClickListener {
             addToHistory()
+            findNavController().navigate(DetailPlaceFragmentDirections.actionDetailPlaceFragment2ToChallengeDetailFragment(args.id))
         }
 
         loadDataObjects()
+//        checkUser()
         return binding.root
     }
 
@@ -158,7 +161,6 @@ class DetailPlaceFragment : Fragment() {
         materialBuilder.setView(inflater)
         materialBuilder.show()
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

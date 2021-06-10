@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.ActivityChallengeBinding
 import com.bearbrand.fourney.ui.challenge.ChallengeFragment
+import com.bearbrand.fourney.ui.challenge.ChallengeFragment.Companion.PLACE_ID
 
 class ChallengeActivity : AppCompatActivity() {
 
@@ -14,13 +15,5 @@ class ChallengeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChallengeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val mFragmentManager = supportFragmentManager
-        val mFragmentChallenge = ChallengeFragment()
-
-        mFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainerView, mFragmentChallenge, ChallengeFragment::class.java.simpleName)
-            commit()
-        }
     }
 }
