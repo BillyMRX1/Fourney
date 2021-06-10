@@ -11,11 +11,13 @@ import androidx.navigation.fragment.findNavController
 import com.bearbrand.fourney.MenuActivity
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.activity.AuthActivity
+import com.bearbrand.fourney.activity.ChallengeActivity
 import com.bearbrand.fourney.activity.RecommendationActivity
 import com.bearbrand.fourney.adapter.AdvertiseAdapter
 import com.bearbrand.fourney.databinding.FragmentHomeBinding
 import com.bearbrand.fourney.helper.OnItemClickListener
 import com.bearbrand.fourney.model.Place
+import com.bearbrand.fourney.ui.challenge.ChallengeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
@@ -49,7 +51,9 @@ class HomeFragment : Fragment() {
             val intent = Intent(context, AuthActivity::class.java)
             startActivity(intent)
         }
-
+        binding.cardChallenge.setOnClickListener{
+            startActivity(Intent(context, ChallengeActivity::class.java))
+        }
         return binding.root
     }
 

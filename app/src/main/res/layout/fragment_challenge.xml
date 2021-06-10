@@ -5,10 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.challenge.ChallengeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <include
+        android:id="@+id/view_challenge"
+        layout="@layout/view_challenge"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/view_error"
+        layout="@layout/view_error"
+        android:visibility="gone"/>
 
 </FrameLayout>

@@ -39,7 +39,7 @@ class ObjectAdapter(options: FirestoreRecyclerOptions<ListObject>) : FirestoreRe
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: ListObject) {
         holder.title?.text = model.title
-        holder.point?.text = "+ ${model.point} Poin"
+        holder.point?.text = "+ ${model.coint} Coin"
     }
 
     override fun updateOptions(options: FirestoreRecyclerOptions<ListObject>) {

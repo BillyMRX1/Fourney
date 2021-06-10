@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.ActivityDetailHistoryBinding
+import com.bearbrand.fourney.model.DummyHistoryModel
 import com.bearbrand.fourney.model.HistoryModel
 import com.bearbrand.fourney.ui.history.HistoryAdapter
 import com.bearbrand.fourney.utils.DummyHistory
@@ -20,7 +21,7 @@ class DetailHistoryActivity : AppCompatActivity() {
         binding = ActivityDetailHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val intentValue = intent.getParcelableExtra<HistoryModel>(DETAIL)
+        val intentValue = intent.getParcelableExtra<DummyHistoryModel>(DETAIL)
 
         with(binding){
             btnBack.setOnClickListener { finish() }

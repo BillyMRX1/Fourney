@@ -36,4 +36,5 @@
     </string>
     <string name="geofences_added">Geofences Added</string>
     <string name="geofences_removed">Geofence Removed</string>
+    <string name="challenge_hint">Temukan objek sesuai dengan ciri ciri yang ada, scan, dan dapatkan poin.</string>
 </resources>
