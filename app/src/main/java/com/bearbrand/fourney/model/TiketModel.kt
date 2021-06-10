@@ -7,9 +7,8 @@ import kotlinx.parcelize.Parcelize
 data class TiketModel(
     val background:String = "",
     val coin:Int = 0,
+    val kuponId :String = "",
     val validUntil:String = "",
     val voucherPlace:String = "",
     val voucherTitle: String = "",
-
-
 ) : Parcelable
