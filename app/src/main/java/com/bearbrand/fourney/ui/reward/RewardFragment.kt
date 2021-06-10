@@ -87,8 +87,9 @@ class RewardFragment : Fragment() {
         val list = ArrayList<String>()
         list.add("BnC6Yeho3NsZ4OnUZeCY")
         val historyData = UserKuponModel(uid!!, list)
-        val tempData = "BnC6Yeho3NsZ4OnUZeCY"
-        val ref = FirebaseFirestore.getInstance().collection("userKupon")
+        val tempData = "abc"
+
+        val ref = FirebaseFirestore.getInstance().collection("kuponUser")
         val data = ref.document(uid)
         val query = ref.whereEqualTo("uid", uid)
         query.addSnapshotListener { document, _ ->
