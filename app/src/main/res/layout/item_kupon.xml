@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginStart="8dp"
+    android:id="@+id/layout_tiket"
+    android:layout_marginEnd="8dp"
+    android:layout_height="120dp"
+    android:background="@drawable/bg_tiket">
+
+    <TextView
+        android:id="@+id/tv_voucher_title"
+        style="@style/white_b_18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="20dp"
+        android:text="Discount 25%"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_voucher_place"
+        style="@style/white_sb_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Tiket Masuk Pariwisata"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_voucher_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_voucher_title" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/white_m_12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Valid until"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_voucher_place"
+        app:layout_constraintTop_toBottomOf="@+id/tv_voucher_place" />
+
+    <TextView
+        android:id="@+id/tv_valid_until"
+        style="@style/white_m_12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="December 25,2021"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_detail"
+        android:layout_width="77dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/white"
+        android:text="Detail"
+        android:textAllCaps="false"
+        android:textColor="@color/blue"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_valid_until"
+        app:layout_constraintStart_toEndOf="@+id/tv_voucher_place" />
+
+    <ImageView
+        android:id="@+id/logo_tiket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/ic_logo_tiket"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_coin"
+        style="@style/blue_m_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="100"
+        app:layout_constraintEnd_toEndOf="@+id/logo_tiket"
+        app:layout_constraintLeft_toLeftOf="@id/logo_tiket"
+        app:layout_constraintTop_toBottomOf="@id/logo_tiket" />
+
+    <TextView
+        android:id="@+id/textViewCp"
+        style="@style/blue_m_12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CP"
+        app:layout_constraintEnd_toEndOf="@+id/tv_coin"
+        app:layout_constraintLeft_toLeftOf="@id/tv_coin"
+        app:layout_constraintTop_toBottomOf="@id/tv_coin" />
+</androidx.constraintlayout.widget.ConstraintLayout>

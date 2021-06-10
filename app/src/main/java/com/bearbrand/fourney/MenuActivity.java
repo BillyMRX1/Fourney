@@ -49,6 +49,8 @@ import com.bearbrand.fourney.drawer.DrawerAdapter;
 import com.bearbrand.fourney.drawer.DrawerItem;
 import com.bearbrand.fourney.drawer.SimpleItem;
 import com.bearbrand.fourney.drawer.SpaceItem;
+import com.bearbrand.fourney.model.HistoryModel;
+import com.bearbrand.fourney.model.UserModel;
 import com.bearbrand.fourney.ui.history.HistoryFragment;
 import com.bearbrand.fourney.ui.home.HomeFragment;
 import com.bearbrand.fourney.ui.leaderboard.LeaderboardFragment;
@@ -72,6 +74,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.OnProgressListener;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
@@ -536,6 +539,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
         protected Void doInBackground(Void... params)
         {
+            checkNotification();
 
             return null;
         }
@@ -543,6 +547,37 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
         {
             checkUser();
         }
+
+    }
+
+    private void checkNotification() {
+        CollectionReference data = FirebaseFirestore.getInstance().collection("users");
+        Query query = data.whereEqualTo("status","Positive");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+//                if(task.getResult()!=null){
+                for(DocumentSnapshot document: task.getResult()) {
+                    Log.d("Status Positive", document.getString("uid"));
+                    DocumentReference historyRef = FirebaseFirestore.getInstance().collection("history").document(document.getString("uid"));
+                    historyRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc.exists()) {
+                                Map<String, Object> map = doc.getData();
+                                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                    if (entry.getKey().equals("idPlace")) {
+                                        Log.d("ID PLACE HISTORY ", entry.getValue().toString());
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+//                }
+            }
+        });
 
     }
 }
