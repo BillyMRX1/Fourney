@@ -17,7 +17,17 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/rv_history"
+        android:layout_marginTop="24dp"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_history"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+    </androidx.recyclerview.widget.RecyclerView>
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

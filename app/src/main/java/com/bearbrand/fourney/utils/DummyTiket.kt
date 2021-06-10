@@ -36,6 +36,16 @@ object DummyTiket {
                 "bg_tiket3"
             )
         )
+        listTiket.add(
+            TiketModel(
+                "Discount 40%",
+                "Tiket Masuk Pariwisata",
+                "December 25, 2021",
+                150,
+                "adpjasdklasfasfasdasd",
+                "bg_tiket1"
+            )
+        )
         return listTiket
     }
     fun getMyTicket():ArrayList<TiketModel>{

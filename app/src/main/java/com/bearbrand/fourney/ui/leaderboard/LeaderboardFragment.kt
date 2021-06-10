@@ -8,14 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bearbrand.fourney.R
-import com.bearbrand.fourney.databinding.FragmentHomeBinding
 import com.bearbrand.fourney.databinding.FragmentLeaderboardBinding
 import com.bearbrand.fourney.model.LeaderboardModel
-import com.bearbrand.fourney.model.UserModel
-import com.bearbrand.fourney.ui.profile.ProfileViewModel
-import com.bearbrand.fourney.ui.reward.tiketku.TiketkuAdapter
-import com.bearbrand.fourney.utils.DummyLeaderBoard
-import com.bearbrand.fourney.utils.DummyTiket
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 
@@ -47,7 +41,7 @@ class LeaderboardFragment : Fragment() {
 
     private fun setUser(user: LeaderboardModel) {
         with(binding) {
-            tvXp.text = user.xp.toString()
+            tvXp.text = "${user.xp} XP"
             tvMyPosition.text = user.rank.toString()
             tvUsername.text = user.username
             val imageAvatar =

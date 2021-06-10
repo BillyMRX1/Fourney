@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fourney">
-        <activity android:name=".ui.reward.tiketku.detail.UsedTicketActivity"></activity>
+        <activity android:name=".ui.history.detail.DetailHistoryActivity"></activity>
+        <activity android:name=".ui.reward.tiketku.detail.UsedTicketActivity" />
         <activity android:name=".ui.reward.tiketku.detail.DetailMyTicketActivity" />
         <activity android:name=".ui.reward.tiketku.MyTicketActivity" />
         <activity android:name=".ui.reward.detail.DetailTicketActivity" />
