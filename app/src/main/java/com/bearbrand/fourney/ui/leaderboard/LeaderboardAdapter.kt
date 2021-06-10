@@ -51,7 +51,7 @@ class LeaderboardAdapter(private val listItem: ArrayList<LeaderboardModel>) :
                     tvRank.visibility = View.VISIBLE
                     tvRank.text = item.rank.toString()
                 }
-                tvXp.text = item.xp.toString()
+                tvXp.text ="${item.xp} XP"
                 val imageAvatar =
                     if (item.imgPhoto.isNotEmpty()) item.imgPhoto else R.drawable.ic_base_avatar
                 Glide.with(itemView.context)
