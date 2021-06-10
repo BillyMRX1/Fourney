@@ -9,5 +9,18 @@
         android:id="@+id/challengeFragment"
         android:name="com.bearbrand.fourney.ui.challenge.ChallengeFragment"
         android:label="ChallengeFragment"
-        tools:layout="@layout/fragment_challenge"/>
+        tools:layout="@layout/fragment_challenge">
+        <action
+            android:id="@+id/action_challengeFragment_to_challengeDetailFragment"
+            app:destination="@id/challengeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/challengeDetailFragment"
+        android:name="com.bearbrand.fourney.ui.challenge.ChallengeDetailFragment"
+        android:label="fragment_challenge_detail"
+        tools:layout="@layout/fragment_challenge_detail" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 </navigation>
