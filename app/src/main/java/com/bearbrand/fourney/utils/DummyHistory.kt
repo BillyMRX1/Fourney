@@ -1,14 +1,15 @@
 package com.bearbrand.fourney.utils
 
+import com.bearbrand.fourney.model.DummyHistoryModel
 import com.bearbrand.fourney.model.DummyObjectModel
 import com.bearbrand.fourney.model.HistoryModel
 
 object DummyHistory {
-    fun generateDummyHistory():ArrayList<HistoryModel>{
-        val listDummy = ArrayList<HistoryModel>()
+    fun generateDummyHistory():ArrayList<DummyHistoryModel>{
+        val listDummy = ArrayList<DummyHistoryModel>()
 
         listDummy.add(
-            HistoryModel(
+            DummyHistoryModel(
                 "Jatim Park",
                 "30 Desember 2020",
                 20,
@@ -19,7 +20,7 @@ object DummyHistory {
         )
 
         listDummy.add(
-            HistoryModel(
+            DummyHistoryModel(
                 "Dufan",
                 "31 Desember 2020",
                 20,

@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.ItemHistoryBinding
 import com.bearbrand.fourney.databinding.ItemLeaderboardBinding
+import com.bearbrand.fourney.model.DummyHistoryModel
 import com.bearbrand.fourney.model.HistoryModel
 import com.bearbrand.fourney.model.LeaderboardModel
 import com.bearbrand.fourney.ui.history.detail.DetailHistoryActivity
 import com.bumptech.glide.Glide
 
-class HistoryAdapter(private val listItem: ArrayList<HistoryModel>) :
+class HistoryAdapter(private val listItem: ArrayList<DummyHistoryModel>) :
     RecyclerView.Adapter<HistoryAdapter.ListViewHolder>() {
 
 
@@ -33,7 +34,7 @@ class HistoryAdapter(private val listItem: ArrayList<HistoryModel>) :
 
     inner class ListViewHolder(private val binding: ItemHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: HistoryModel) {
+        fun bind(item: DummyHistoryModel) {
             with(binding) {
                 val coin = "+ ${item.coin} CP"
                 val xp = "+ ${item.xp} XP"
