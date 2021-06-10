@@ -74,7 +74,7 @@ class DetailPlaceFragment : Fragment() {
         var list = Arrays.asList(hashmap)
         val historyData = HistoryModel(uid!!, list)
 
-        val ref = FirebaseFirestore.getInstance().collection("history")//.document(uid!!)
+        val ref = FirebaseFirestore.getInstance().collection("history")
         val data = ref.document(uid!!)
         data.get().addOnSuccessListener {
             Log.d("ID REF", data.id)
@@ -84,7 +84,7 @@ class DetailPlaceFragment : Fragment() {
                     //intent
                 }
             }else{
-                data.update("place", list).addOnCompleteListener {
+                data.update("place", FieldValue.arrayUnion(hashmap)).addOnCompleteListener {
                     Toast.makeText(context, "Data berhasil di update", Toast.LENGTH_SHORT).show()
                 }
             }
