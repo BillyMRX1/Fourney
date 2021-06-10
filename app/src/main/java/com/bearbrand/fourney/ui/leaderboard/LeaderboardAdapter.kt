@@ -22,10 +22,10 @@ class LeaderboardAdapter(private val listItem: ArrayList<LeaderboardModel>) :
     }
 
     override fun getItemCount(): Int {
-        if (listItem.size >= 10) {
-            return 10
+        return if (listItem.size >= 10) {
+            12
         } else {
-            return listItem.size
+            listItem.size
         }
     }
 

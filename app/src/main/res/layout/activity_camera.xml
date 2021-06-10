@@ -46,4 +46,9 @@
         android:visibility="gone"
         layout="@layout/view_scan_success"/>
 
+    <include
+        android:id="@+id/view_failed"
+        android:visibility="gone"
+        layout="@layout/view_scan_failed"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

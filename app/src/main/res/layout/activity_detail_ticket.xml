@@ -143,11 +143,11 @@
         tools:text="1. Dapatkan Diskon" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_add_kupon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Redeem"
-
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"

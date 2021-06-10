@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.ActivityChallengeBinding
 import com.bearbrand.fourney.ui.challenge.ChallengeFragment
-import com.bearbrand.fourney.ui.challenge.ChallengeFragment.Companion.PLACE_ID
 
 class ChallengeActivity : AppCompatActivity() {
 

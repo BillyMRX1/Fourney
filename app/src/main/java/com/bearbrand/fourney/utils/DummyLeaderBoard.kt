@@ -85,6 +85,30 @@ object DummyLeaderBoard {
                 2200
             )
         )
+        listItem.add(
+            LeaderboardModel(
+                11,
+                "",
+                "Xaviersion",
+                2200
+            )
+        )
+        listItem.add(
+            LeaderboardModel(
+                12,
+                "",
+                "Xaviersion",
+                2200
+            )
+        )
+        listItem.add(
+            LeaderboardModel(
+                13,
+                "",
+                "Xaviersion",
+                2200
+            )
+        )
         return listItem
     }
 }

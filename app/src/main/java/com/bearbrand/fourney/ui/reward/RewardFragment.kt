@@ -2,7 +2,6 @@ package com.bearbrand.fourney.ui.reward
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +22,10 @@ import com.bearbrand.fourney.utils.DummyTiket
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -47,19 +50,50 @@ class RewardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        binding.btnTes.setOnClickListener {
-            addToUserKupon()
-        }
         viewModel.getListTicket().observe(viewLifecycleOwner, ::setListKupon)
-        uid?.let { viewModel.getUser(it).observe(viewLifecycleOwner, ::setUser) }
+        uid?.let {
+            viewModel.getUser(it).observe(viewLifecycleOwner, ::setUser)
+            CoroutineScope(Dispatchers.IO).launch {
+                val userKupon = viewModel.getUserTiket(uid)
+                userKupon.let {
+
+                    withContext(Dispatchers.Main){
+                        binding.progressBar.visibility = View.GONE
+                        binding.allLayout.visibility = View.VISIBLE
+
+                        val kupon = "${userKupon.size} Kupon"
+                        binding.tvKupon.text = kupon
+                        binding.cardMyCupon.setOnClickListener {
+                            if (userKupon.isNotEmpty()) {
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        MyTicketActivity::class.java
+                                    ).putParcelableArrayListExtra(MyTicketActivity.USER_KUPON, userKupon)
+                                )
+                            } else {
+                                Toast.makeText(requireContext(), "TES MASUKK", Toast.LENGTH_SHORT).show()
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        MyTicketActivity::class.java
+                                    )
+                                )
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+        }
     }
+
 
     private fun setUser(user: UserModel) {
         with(binding) {
             val tempInt = 0
-            val kupon = "$tempInt Kupon"
-            tvKupon.text = kupon
             val koin = "${user.point} CP"
             tvCoin.text = koin
             val tantanganku = "$tempInt Tantangan"
@@ -76,38 +110,8 @@ class RewardFragment : Fragment() {
                 activity,
                 LinearLayoutManager.VERTICAL, false
             )
-            binding.cardMyCupon.setOnClickListener {
-                startActivity(Intent(requireContext(), MyTicketActivity::class.java))
-            }
-
         }
     }
 
-    private fun addToUserKupon() {
-        val list = ArrayList<String>()
-        list.add("BnC6Yeho3NsZ4OnUZeCY")
-        val historyData = UserKuponModel(uid!!, list)
-        val tempData = "abc"
 
-        val ref = FirebaseFirestore.getInstance().collection("kuponUser")
-        val data = ref.document(uid)
-        val query = ref.whereEqualTo("uid", uid)
-        query.addSnapshotListener { document, _ ->
-            if (document != null) {
-                if (document.size() > 0) {
-                    Log.d("RewardFragment","isi doc $document")
-                    data.update("listKupon", FieldValue.arrayUnion(tempData))
-                        .addOnCompleteListener {
-                            Toast.makeText(context, "Data berhasil di update", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                } else {
-                    data.set(historyData).addOnCompleteListener {
-                        Toast.makeText(context, "History Berhasil", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-            }
-        }
-    }
 }
