@@ -49,7 +49,6 @@ class DetailPlaceFragment : Fragment() {
         }
 
         loadDataObjects()
-//        checkUser()
         return binding.root
     }
 
@@ -101,44 +100,6 @@ class DetailPlaceFragment : Fragment() {
         }
         materialBuilder.setView(inflater)
         materialBuilder.show()
-    }
-
-    private fun checkUser() {
-//        reference = FirebaseFirestore.getInstance().collection("place")
-//        reference.get().addOnCompleteListener(OnCompleteListener { task ->
-//            if (!checkPermissions()) {
-//                mPendingGeofenceTask = PendingGeofenceTask.ADD
-//                requestPermissions()
-//                return@OnCompleteListener
-//            }
-//            for (document in task.result) {
-//                MenuActivity.BAY_AREA_LANDMARKS[document.getString("title")] = LatLng(
-//                    java.lang.Double.valueOf(document.getString("latitude")),
-//                    java.lang.Double.valueOf(document.getString("longitude"))
-//                )
-//            }
-//
-//            //GEOFENCE
-//            populateGeofenceList(MenuActivity.BAY_AREA_LANDMARKS)
-//            Log.d(MenuActivity.TAG, MenuActivity.BAY_AREA_LANDMARKS.toString())
-//            addGeofences()
-//            performPendingGeofenceTask()
-//        })
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
-        referenceUser = FirebaseFirestore.getInstance().collection("users").document(uid!!)
-        referenceUser.get().addOnSuccessListener { document ->
-                reference = FirebaseFirestore.getInstance().collection("place").document(args.id)
-                reference.get().addOnSuccessListener { result ->
-                    Log.d("cek lokasi", document.getString("location").toString())
-                    Log.d("cek title", result.getString("title").toString())
-                    if (document.getString("location").toString().equals(result.getString("title").toString())){
-                        binding.btnStartChallenge.isEnabled = true
-                    }else{
-                        binding.btnStartChallenge.isEnabled = false
-                    }
-            }
-
-        }
     }
 
 
