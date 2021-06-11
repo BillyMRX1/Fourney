@@ -13,6 +13,7 @@ import androidx.core.graphics.blue
 import androidx.navigation.fragment.findNavController
 import com.bearbrand.fourney.MenuActivity
 import com.bearbrand.fourney.R
+import com.bearbrand.fourney.activity.AuthActivity
 import com.bearbrand.fourney.databinding.FragmentSplashBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -48,17 +49,26 @@ class SplashFragment : Fragment() {
                 startActivity(Intent(requireContext(), MenuActivity::class.java))
                 requireActivity().finish()
             } else {
-                if (isOpenMain()){
+//                if (isOpenMain()){
                     val intent =
-                        Intent(context, MenuActivity::class.java)
+                        Intent(context, AuthActivity::class.java)
                     startActivity(intent)
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     requireActivity().finish()
-                }else{
-                    findNavController().navigate(R.id.action_splashFragment_to_startAuthFragment)
-                }
+                fromSplash()
+//                }else{
+//                    findNavController().navigate(R.id.action_splashFragment_to_startAuthFragment)
+//                }
             }
         }, 2000)
+    }
+
+    private fun fromSplash() {
+            val sharedPref = requireActivity().getSharedPreferences("fromSplash", Context.MODE_PRIVATE)
+            val editor = sharedPref.edit()
+            editor.putBoolean("Finished", true)
+            editor.apply()
+
     }
 
     private fun onBoardingFinished(): Boolean{
