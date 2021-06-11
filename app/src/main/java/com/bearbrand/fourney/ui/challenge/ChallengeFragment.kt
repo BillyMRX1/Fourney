@@ -47,28 +47,7 @@ class ChallengeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadUser()
-
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
-
-        val reference = FirebaseFirestore.getInstance().collection("place")
-        reference.get().addOnSuccessListener { result ->
-            for (doc in result) {
-                refer = FirebaseFirestore.getInstance().collection("users").document(uid!!)
-                refer.get().addOnSuccessListener {
-                    Log.d("CHALLENGE", it.getString("location").toString())
-                    Log.d("CHALLENGE PLACE", doc.getString("title").toString())
-                    if (doc.getString("title").equals(it.getString("location"))) {
-                        binding.viewChallenge.root.visibility = View.VISIBLE
-                        binding.viewError.root.visibility = View.GONE
-                        loadData()
-                    } else {
-                        binding.viewChallenge.root.visibility = View.GONE
-                        binding.viewError.root.visibility = View.VISIBLE
-                    }
-                }
-            }
-
-        }
+        loadData()
     }
 
     @SuppressLint("SetTextI18n")
@@ -88,6 +67,43 @@ class ChallengeFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun loadData() {
+//        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+//        val reference = FirebaseFirestore.getInstance().collection("place")
+//        reference.get().addOnSuccessListener { result ->
+//            for (doc in result) {
+//                refer = FirebaseFirestore.getInstance().collection("users").document(uid!!)
+//                refer.get().addOnSuccessListener {
+//                    Log.d("CHALLENGE", it.getString("location").toString())
+//                    Log.d("CHALLENGE PLACE", doc.getString("title").toString())
+//                    if (doc.getString("title").toString().equals(it.getString("location").toString())) {
+//                        Log.d("CHALLENGE IN", "this")
+//                        binding.viewChallenge.root.visibility = View.VISIBLE
+////                        binding.viewChallenge.root.visibility = View.VISIBLE
+//                        binding.viewChallenge.imgLocation.load(doc.getString("image")) {
+//                            placeholder(R.drawable.no_image)
+//                        }
+//                        binding.viewChallenge.tvName.text = doc.getString("title")
+//                        binding.viewChallenge.tvDescription.text = doc.getString("desc")
+//                        binding.viewChallenge.tvRisk.text =
+//                            doc.getString("risk") + " Risk"
+//                        binding.viewChallenge.tvIconicObject.text =
+//                            "0 / " + doc.getLong("numObject") + " Objek Ikonik"
+//                        binding.viewChallenge.root.visibility = View.VISIBLE
+//                        binding.viewChallenge.btnNext.setOnClickListener {
+//                            findNavController().navigate(
+//                                ChallengeFragmentDirections.actionChallengeFragmentToChallengeDetailFragment(
+//                                    doc.id
+//                                )
+//                            )
+//                        }
+//                    } else if(!doc.getString("title").toString().equals(it.getString("location").toString())){
+//                        binding.viewError.root.visibility = View.VISIBLE
+//                    }
+//                }
+//            }
+//
+//        }
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         referenceUser = FirebaseFirestore.getInstance().collection("users").document(uid!!)
         referenceUser.get().addOnSuccessListener { document ->
@@ -96,25 +112,28 @@ class ChallengeFragment : Fragment() {
             val query = reference.whereEqualTo("title", locationUser)
             query.addSnapshotListener { data, _ ->
                 if (data != null) {
-                    binding.viewChallenge.imgLocation.load(data.documents[0].getString("image")) {
-                        placeholder(R.drawable.no_image)
-                    }
-                    binding.viewChallenge.tvName.text = data.documents[0].getString("title")
-                    binding.viewChallenge.tvDescription.text = data.documents[0].getString("desc")
-                    binding.viewChallenge.tvRisk.text =
-                        data.documents[0].getString("risk") + " Risk"
-                    binding.viewChallenge.tvIconicObject.text =
-                        "0 / " + data.documents[0].getLong("numObject") + " Objek Ikonik"
-                    binding.viewChallenge.root.visibility = View.VISIBLE
-                    binding.viewChallenge.btnNext.setOnClickListener {
-                        findNavController().navigate(
-                            ChallengeFragmentDirections.actionChallengeFragmentToChallengeDetailFragment(
-                                data.documents[0].id
+                    if(data.size() > 0) {
+                        binding.viewChallenge.imgLocation.load(data.documents[0].getString("image")) {
+                            placeholder(R.drawable.no_image)
+                        }
+                        binding.viewChallenge.tvName.text = data.documents[0].getString("title")
+                        binding.viewChallenge.tvDescription.text =
+                            data.documents[0].getString("desc")
+                        binding.viewChallenge.tvRisk.text =
+                            data.documents[0].getString("risk") + " Risk"
+                        binding.viewChallenge.tvIconicObject.text =
+                            "0 / " + data.documents[0].getLong("numObject") + " Objek Ikonik"
+                        binding.viewChallenge.root.visibility = View.VISIBLE
+                        binding.viewChallenge.btnNext.setOnClickListener {
+                            findNavController().navigate(
+                                ChallengeFragmentDirections.actionChallengeFragmentToChallengeDetailFragment(
+                                    data.documents[0].id
+                                )
                             )
-                        )
+                        }
+                    }else {
+                        binding.viewError.root.visibility = View.VISIBLE
                     }
-                } else {
-                    binding.viewError.root.visibility = View.VISIBLE
                 }
             }
         }
