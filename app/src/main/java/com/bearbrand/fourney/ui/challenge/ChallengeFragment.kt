@@ -2,6 +2,7 @@ package com.bearbrand.fourney.ui.challenge
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ class ChallengeFragment : Fragment() {
     private var _binding: FragmentChallengeBinding? = null
     private val binding get() = _binding!!
     private lateinit var reference: CollectionReference
+    private lateinit var refer: DocumentReference
     private lateinit var referenceUser: DocumentReference
     private lateinit var data: DocumentReference
     private val firestore = FirebaseFirestore.getInstance()
@@ -33,13 +35,40 @@ class ChallengeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentChallengeBinding.inflate(layoutInflater, container, false)
+        binding.viewError.ivBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+        binding.viewChallenge.ivBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadData()
         loadUser()
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        val reference = FirebaseFirestore.getInstance().collection("place")
+        reference.get().addOnSuccessListener { result ->
+            for (doc in result) {
+                refer = FirebaseFirestore.getInstance().collection("users").document(uid!!)
+                refer.get().addOnSuccessListener {
+                    Log.d("CHALLENGE", it.getString("location").toString())
+                    Log.d("CHALLENGE PLACE", doc.getString("title").toString())
+                    if (doc.getString("title").equals(it.getString("location"))) {
+                        binding.viewChallenge.root.visibility = View.VISIBLE
+                        binding.viewError.root.visibility = View.GONE
+                        loadData()
+                    } else {
+                        binding.viewChallenge.root.visibility = View.GONE
+                        binding.viewError.root.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -51,6 +80,8 @@ class ChallengeFragment : Fragment() {
             data.get().addOnSuccessListener {
                 binding.viewChallenge.tvPoin.text = it.getLong("point").toString() + " CP"
                 binding.viewChallenge.tvXp.text = it.getLong("xp").toString() + " XP"
+                binding.viewError.tvPoin.text = it.getLong("point").toString() + " CP"
+                binding.viewError.tvXp.text = it.getLong("xp").toString() + " XP"
             }
         }
     }

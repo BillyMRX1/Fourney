@@ -31,17 +31,22 @@ class StartAuthFragment : Fragment() {
         requireActivity().window.statusBarColor = resources.getColor(R.color.white)
 
         binding.btnDaftar.setOnClickListener {
-            val mFragmentDaftar = RegisterFragment()
+            if(openedMain() || fromSplash()){
+                val mFragmentDaftar = RegisterFragment()
 
-            mFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.fragmentContainerView, mFragmentDaftar, RegisterFragment::class.java.simpleName)
-                addToBackStack(null)
-                commit()
+                mFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.fragmentContainerView, mFragmentDaftar, RegisterFragment::class.java.simpleName)
+                    addToBackStack(null)
+                    commit()
+                }
+            }else{
+                findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragmentToRegisterFragment())
             }
+
         }
 
         binding.btnMasuk.setOnClickListener {
-            if(openedMain()){
+            if(openedMain() || fromSplash()){
                 val mFragmentMasuk = LoginFragment()
 
                 mFragmentManager?.beginTransaction()?.apply {
@@ -63,6 +68,11 @@ class StartAuthFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun fromSplash(): Boolean {
+        val sharedPref = requireActivity().getSharedPreferences("fromSplash", Context.MODE_PRIVATE)
+        return sharedPref.getBoolean("Finished", false)
     }
 
     private fun onBoardingFinish() {

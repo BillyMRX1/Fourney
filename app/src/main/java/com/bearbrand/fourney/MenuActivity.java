@@ -188,7 +188,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
             requestPermissions();
         } else {
             checkUserLocation();
-            checkNotification();
+
         }
     }
 
@@ -523,6 +523,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     private void checkUserLocation() {
         if (user != null) {
+            checkNotification();
             reference = FirebaseFirestore.getInstance().collection("place");
             reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
