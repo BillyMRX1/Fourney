@@ -126,6 +126,10 @@ class ProfileFragment : Fragment() {
                     dialog.setNegativeButton("Tidak") { dialog: DialogInterface?, which: Int -> }
                     dialog.show()
                 }
+                btnRiwayatTantangan.setOnClickListener {
+                    val intent = Intent(requireContext(),HistoryActivity::class.java)
+                    startActivity(intent)
+                }
 
 
             }

@@ -1,11 +1,10 @@
 package com.bearbrand.fourney.ui.reward
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bearbrand.fourney.model.TiketModel
-import com.bearbrand.fourney.model.UserKuponModel
-import com.bearbrand.fourney.model.UserModel
+import com.bearbrand.fourney.model.*
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -56,6 +55,7 @@ class RewardViewModel : ViewModel() {
     suspend fun getUserTiket(uid: String): ArrayList<TiketModel> {
         val listKupon = ArrayList<TiketModel>()
         var kuponUser = UserKuponModel()
+
         val getData  =  CoroutineScope(Dispatchers.IO).launch {
             val kuponUserSnapshot = Firebase.firestore.collection("kuponUser")
                 .whereEqualTo("uid", uid)
@@ -87,6 +87,32 @@ class RewardViewModel : ViewModel() {
         }
         getData.join()
         return listKupon
+    }
+
+    suspend fun getMyChallenge(uid: String): Int{
+        var numberChallenge = 0
+        val listHistory = ArrayList<HistoryModel>()
+        val gettingData = CoroutineScope(Dispatchers.IO).launch {
+            val historySnapshot = Firebase.firestore.collection("history")
+                .whereEqualTo("idUser", uid)
+                .get()
+                .await()
+            for (history in historySnapshot.documents) {
+                history.toObject<HistoryModel>().also {
+                    Log.d("HistorytoObject", "$history")
+                    listHistory.add(it!!)
+                }
+
+            }
+        }
+        gettingData.join()
+
+        listHistory.forEach {
+            it.place?.forEach { place ->
+                numberChallenge++
+            }
+        }
+        return numberChallenge
     }
 
 

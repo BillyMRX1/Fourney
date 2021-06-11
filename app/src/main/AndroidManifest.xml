@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fourney">
-        <activity android:name=".ui.history.detail.DetailHistoryActivity"/>
+        <activity android:name=".ui.profile.HistoryActivity"></activity>
+        <activity android:name=".ui.history.detail.DetailHistoryActivity" />
         <activity android:name=".ui.reward.tiketku.detail.UsedTicketActivity" />
         <activity android:name=".ui.reward.tiketku.detail.DetailMyTicketActivity" />
         <activity android:name=".ui.reward.tiketku.MyTicketActivity" />
@@ -23,7 +24,7 @@
         <activity android:name=".ui.profile.resetpassword.ResetPasswordActivity" />
         <activity android:name=".ui.profile.editprofile.EditProfilActivity" />
         <activity android:name=".activity.RecommendationActivity" />
-        <activity android:name=".ui.camera.CameraActivity"/>
+        <activity android:name=".ui.camera.CameraActivity" />
         <activity
             android:name=".activity.AuthActivity"
             android:screenOrientation="portrait" />
@@ -36,12 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.ChallengeActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MenuActivity"
             android:screenOrientation="portrait"

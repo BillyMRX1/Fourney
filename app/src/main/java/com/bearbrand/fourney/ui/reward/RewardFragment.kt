@@ -8,26 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.FragmentRewardBinding
-import com.bearbrand.fourney.model.HistoryModel
 import com.bearbrand.fourney.model.TiketModel
-import com.bearbrand.fourney.model.UserKuponModel
 import com.bearbrand.fourney.model.UserModel
-import com.bearbrand.fourney.ui.profile.ProfileViewModel
 import com.bearbrand.fourney.ui.reward.tiketku.MyTicketActivity
-import com.bearbrand.fourney.utils.DummyTiket
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -56,11 +46,12 @@ class RewardFragment : Fragment() {
             CoroutineScope(Dispatchers.IO).launch {
                 val userKupon = viewModel.getUserTiket(uid)
                 userKupon.let {
-
+                    val numberChallenge = viewModel.getMyChallenge(uid)
                     withContext(Dispatchers.Main){
                         binding.progressBar.visibility = View.GONE
                         binding.allLayout.visibility = View.VISIBLE
-
+                        val tantanganku = "$numberChallenge Tantangan"
+                        binding.tvTantanganku.text = tantanganku
                         val kupon = "${userKupon.size} Kupon"
                         binding.tvKupon.text = kupon
                         binding.cardMyCupon.setOnClickListener {
@@ -93,11 +84,8 @@ class RewardFragment : Fragment() {
 
     private fun setUser(user: UserModel) {
         with(binding) {
-            val tempInt = 0
             val koin = "${user.point} CP"
             tvCoin.text = koin
-            val tantanganku = "$tempInt Tantangan"
-            tvTantanganku.text = tantanganku
         }
     }
 

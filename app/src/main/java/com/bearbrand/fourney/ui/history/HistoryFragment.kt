@@ -52,7 +52,7 @@ class HistoryFragment : Fragment() {
                             rvHistory.adapter = adapter
                             adapter.notifyDataSetChanged()
                             rvHistory.layoutManager = LinearLayoutManager(
-                                requireContext(),
+                                activity,
                                 LinearLayoutManager.VERTICAL, false
                             )
                         }
