@@ -43,41 +43,44 @@ class RewardFragment : Fragment() {
         if (user != null){
             viewModel.getListTicket().observe(viewLifecycleOwner, ::setListKupon)
             uid?.let {
-                viewModel.getUser(it).observe(viewLifecycleOwner, {
-                    with(binding) {
-                        val koin = "${it.point} CP"
-                        tvCoin.text = koin
-                    }
-                })
                 CoroutineScope(Dispatchers.IO).launch {
+                    val currUser = viewModel.getUser(uid)
                     val userKupon = viewModel.getUserTiket(uid)
+                    currUser.let {
+                        withContext(Dispatchers.Main){
+                            val koin = "${it.point} CP"
+                            binding.tvCoin.text = koin
+                        }
+                    }
                     userKupon.let {
                         val numberChallenge = viewModel.getMyChallenge(uid)
                         withContext(Dispatchers.Main){
-                            binding.progressBar.visibility = View.GONE
-                            binding.allLayout.visibility = View.VISIBLE
-                            val tantanganku = "$numberChallenge Tantangan"
-                            binding.tvTantanganku.text = tantanganku
-                            val kupon = "${userKupon.size} Kupon"
-                            binding.tvKupon.text = kupon
-                            binding.cardMyCupon.setOnClickListener {
-                                if (userKupon.isNotEmpty()) {
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            MyTicketActivity::class.java
-                                        ).putParcelableArrayListExtra(MyTicketActivity.USER_KUPON, userKupon)
-                                    )
-                                } else {
-                                    Toast.makeText(requireContext(), "TES MASUKK", Toast.LENGTH_SHORT).show()
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            MyTicketActivity::class.java
+                            with(binding){
+                                progressBar.visibility = View.GONE
+                                allLayout.visibility = View.VISIBLE
+                                val tantanganku = "$numberChallenge Tantangan"
+                                tvTantanganku.text = tantanganku
+                                val kupon = "${userKupon.size} Kupon"
+                                tvKupon.text = kupon
+                                cardMyCupon.setOnClickListener {
+                                    if (userKupon.isNotEmpty()) {
+                                        startActivity(
+                                            Intent(
+                                                requireContext(),
+                                                MyTicketActivity::class.java
+                                            ).putParcelableArrayListExtra(MyTicketActivity.USER_KUPON, userKupon)
                                         )
-                                    )
+                                    } else {
+                                        startActivity(
+                                            Intent(
+                                                requireContext(),
+                                                MyTicketActivity::class.java
+                                            )
+                                        )
+                                    }
                                 }
                             }
+
 
                         }
 

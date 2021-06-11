@@ -13,6 +13,10 @@ import com.bearbrand.fourney.databinding.ActivityDetailTicketBinding
 import com.bearbrand.fourney.model.TiketModel
 import com.bearbrand.fourney.ui.reward.RewardViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailTicketActivity : AppCompatActivity() {
     companion object {
@@ -58,39 +62,44 @@ class DetailTicketActivity : AppCompatActivity() {
                 tvSdk.text = snk
 
                 uid?.let { uid ->
-                    viewModel.getUser(uid).observe(this@DetailTicketActivity, {
-                        btnAddKupon.setOnClickListener { _ ->
-                            val dialog = AlertDialog.Builder(this@DetailTicketActivity)
-                            dialog.setTitle("Pembelian Kupon")
-                            dialog.setMessage("Apakah kamu yakin ingin membeli kupon ini?")
-                            dialog.setPositiveButton("Iya") { dialog: DialogInterface?, which: Int ->
-                                if (it.point > kupon.coin) {
-                                    viewModel.addToUserKupon(kupon.kuponId, uid,kupon.coin)
-                                    Toast.makeText(this@DetailTicketActivity,"Pembelian tiketmu berhasil",Toast.LENGTH_SHORT).show()
-                                    Toast.makeText(this@DetailTicketActivity,"Silahkan reload ulang halaman reward untuk melihat perubahan",Toast.LENGTH_SHORT).show()
-                                    finish()
-                                } else {
-                                    Toast.makeText(
-                                        this@DetailTicketActivity,
-                                        "Maaf Coin Pointmu belum mencukupi",
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val currUser =  viewModel.getUserKoin(uid)
+                        withContext(Dispatchers.Main){
+                            btnAddKupon.setOnClickListener { _ ->
+                                val dialog = AlertDialog.Builder(this@DetailTicketActivity)
+                                dialog.setTitle("Pembelian Kupon")
+                                dialog.setMessage("Apakah kamu yakin ingin membeli kupon ini?")
+                                dialog.setPositiveButton("Iya") { dialog: DialogInterface?, which: Int ->
+                                    if (currUser > kupon.coin) {
+                                        viewModel.addToUserKupon(kupon.kuponId, uid,kupon.coin)
+                                        Toast.makeText(this@DetailTicketActivity,"Pembelian tiketmu berhasil",Toast.LENGTH_SHORT).show()
+                                        onBackPressed()
+                                    } else {
+                                        Toast.makeText(
+                                            this@DetailTicketActivity,
+                                            "Maaf Coin Pointmu belum mencukupi",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
                                 }
+                                dialog.setNegativeButton("Tidak") { dialog: DialogInterface?, which: Int -> }
+                                dialog.show()
                             }
-                            dialog.setNegativeButton("Tidak") { dialog: DialogInterface?, which: Int -> }
-                            dialog.show()
-                        }
 
-                    })
+                        }
+                        }
+                    }
+
+
 
                 }
-            }
             btnBack.setOnClickListener {
                 onBackPressed()
             }
+            }
+
 
         }
 
 
     }
-}

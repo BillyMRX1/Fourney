@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.bearbrand.fourney.MenuActivity
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.FragmentLoginBinding
+import com.bearbrand.fourney.ui.profile.resetpassword.ResetPasswordActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -33,6 +34,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         binding.tvDaftar.setOnClickListener (this)
         binding.btnMasuk.setOnClickListener(this)
         binding.ivBack.setOnClickListener (this)
+        binding.tvForgetPassword.setOnClickListener (this)
 
         return binding.root
     }
@@ -57,6 +59,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 if (!isValidLogin(email, pass)) binding.progress.visibility = View.GONE
                 else loginUser(email, pass)
             }
+            R.id.tv_forget_password ->{
+                startActivity(Intent(activity,ResetPasswordActivity::class.java))
+            }
+
         }
     }
 

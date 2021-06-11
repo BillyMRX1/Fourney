@@ -100,6 +100,7 @@
             android:layout_marginTop="24dp"
             android:backgroundTint="@color/blue"
             android:padding="15dp"
+
             android:text="Simpan Perubahan"
             android:textAllCaps="false"
             app:cornerRadius="8dp" />
