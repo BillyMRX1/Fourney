@@ -28,7 +28,7 @@ class EditProfilActivity : AppCompatActivity() {
                 tilPhoneNumber.editText?.setText(item.phone)
 
                 btnBack.setOnClickListener {
-                    finish()
+                    onBackPressed()
                 }
 
                 btnEditProfile.setOnClickListener {
@@ -54,7 +54,7 @@ class EditProfilActivity : AppCompatActivity() {
 
 
         binding.btnBack.setOnClickListener {
-            finish()
+            onBackPressed()
         }
 
 

@@ -13,7 +13,7 @@ class UsedTicketActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnBack.setOnClickListener {
-            finish()
+            onBackPressed()
         }
     }
 }

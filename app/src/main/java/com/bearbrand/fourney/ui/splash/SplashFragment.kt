@@ -31,13 +31,13 @@ class SplashFragment : Fragment() {
         //requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         requireActivity().window.statusBarColor = resources.getColor(R.color.blue)
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             if(onBoardingFinished()){
                 checkUser()
             }else{
                 findNavController().navigate(R.id.action_splashFragment_to_firstScreenFragment)
             }
-        }, 1000)
+        }, 2000)
 
         return binding.root
     }

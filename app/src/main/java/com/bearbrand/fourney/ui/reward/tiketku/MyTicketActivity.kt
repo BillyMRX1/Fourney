@@ -38,7 +38,7 @@ class MyTicketActivity : AppCompatActivity() {
             }
 
             btnBack.setOnClickListener {
-                finish()
+                onBackPressed()
             }
         }
     }

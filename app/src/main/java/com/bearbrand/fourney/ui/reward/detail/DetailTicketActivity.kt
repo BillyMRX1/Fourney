@@ -86,7 +86,7 @@ class DetailTicketActivity : AppCompatActivity() {
                 }
             }
             btnBack.setOnClickListener {
-                finish()
+                onBackPressed()
             }
 
         }

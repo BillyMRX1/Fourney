@@ -37,57 +37,57 @@ class RewardFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.getListTicket().observe(viewLifecycleOwner, ::setListKupon)
-        uid?.let {
-            viewModel.getUser(it).observe(viewLifecycleOwner, ::setUser)
-            CoroutineScope(Dispatchers.IO).launch {
-                val userKupon = viewModel.getUserTiket(uid)
-                userKupon.let {
-                    val numberChallenge = viewModel.getMyChallenge(uid)
-                    withContext(Dispatchers.Main){
-                        binding.progressBar.visibility = View.GONE
-                        binding.allLayout.visibility = View.VISIBLE
-                        val tantanganku = "$numberChallenge Tantangan"
-                        binding.tvTantanganku.text = tantanganku
-                        val kupon = "${userKupon.size} Kupon"
-                        binding.tvKupon.text = kupon
-                        binding.cardMyCupon.setOnClickListener {
-                            if (userKupon.isNotEmpty()) {
-                                startActivity(
-                                    Intent(
-                                        requireContext(),
-                                        MyTicketActivity::class.java
-                                    ).putParcelableArrayListExtra(MyTicketActivity.USER_KUPON, userKupon)
-                                )
-                            } else {
-                                Toast.makeText(requireContext(), "TES MASUKK", Toast.LENGTH_SHORT).show()
-                                startActivity(
-                                    Intent(
-                                        requireContext(),
-                                        MyTicketActivity::class.java
+    override fun onResume() {
+        super.onResume()
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null){
+            viewModel.getListTicket().observe(viewLifecycleOwner, ::setListKupon)
+            uid?.let {
+                viewModel.getUser(it).observe(viewLifecycleOwner, {
+                    with(binding) {
+                        val koin = "${it.point} CP"
+                        tvCoin.text = koin
+                    }
+                })
+                CoroutineScope(Dispatchers.IO).launch {
+                    val userKupon = viewModel.getUserTiket(uid)
+                    userKupon.let {
+                        val numberChallenge = viewModel.getMyChallenge(uid)
+                        withContext(Dispatchers.Main){
+                            binding.progressBar.visibility = View.GONE
+                            binding.allLayout.visibility = View.VISIBLE
+                            val tantanganku = "$numberChallenge Tantangan"
+                            binding.tvTantanganku.text = tantanganku
+                            val kupon = "${userKupon.size} Kupon"
+                            binding.tvKupon.text = kupon
+                            binding.cardMyCupon.setOnClickListener {
+                                if (userKupon.isNotEmpty()) {
+                                    startActivity(
+                                        Intent(
+                                            requireContext(),
+                                            MyTicketActivity::class.java
+                                        ).putParcelableArrayListExtra(MyTicketActivity.USER_KUPON, userKupon)
                                     )
-                                )
+                                } else {
+                                    Toast.makeText(requireContext(), "TES MASUKK", Toast.LENGTH_SHORT).show()
+                                    startActivity(
+                                        Intent(
+                                            requireContext(),
+                                            MyTicketActivity::class.java
+                                        )
+                                    )
+                                }
                             }
+
                         }
 
                     }
-
                 }
+
             }
-
         }
     }
 
-
-    private fun setUser(user: UserModel) {
-        with(binding) {
-            val koin = "${user.point} CP"
-            tvCoin.text = koin
-        }
-    }
 
     private fun setListKupon(listItem: ArrayList<TiketModel>) {
         with(binding) {

@@ -174,13 +174,6 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     }
 
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -623,7 +616,6 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                                                 for (int j = 0; j<arrayDataUser.size(); j++){
                                                     if (mapPositive.get(i).equals(mapUser.get(j))){
                                                         //send notif
-
                                                         sendNotification(arrayDataPositive.toString());
 
                                                     }

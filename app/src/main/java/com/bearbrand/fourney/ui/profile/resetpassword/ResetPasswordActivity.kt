@@ -27,7 +27,7 @@ class ResetPasswordActivity : AppCompatActivity() {
             tilEmail.editText?.setText(intentValue)
 
             btnBack.setOnClickListener {
-                finish()
+                onBackPressed()
             }
             btnReset.setOnClickListener {
                 val email = etEmail.text.toString().trim()

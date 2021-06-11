@@ -59,7 +59,7 @@ class DetailHistoryActivity : AppCompatActivity() {
 
 
             btnBack.setOnClickListener {
-                finish()
+                onBackPressed()
             }
 
 

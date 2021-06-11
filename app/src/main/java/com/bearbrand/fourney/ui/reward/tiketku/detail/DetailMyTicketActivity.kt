@@ -54,7 +54,7 @@ class DetailMyTicketActivity : AppCompatActivity() {
                 startActivity(Intent(this@DetailMyTicketActivity, UsedTicketActivity::class.java))
             }
             btnBack.setOnClickListener {
-                finish()
+                onBackPressed()
             }
         }
     }
