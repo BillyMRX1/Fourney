@@ -30,14 +30,14 @@
         tools:text="Jatim Park" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textViewKeterangan"
         style="@style/gray_m_14"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
-        android:text="Misi anda belum selesai, silahkan lanjutkan melalui halaman challenge."
+        tools:text="Misi anda belum selesai, silahkan lanjutkan melalui halaman challenge."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_location" />
@@ -49,5 +49,5 @@
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewKeterangan" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,15 +3,14 @@ package com.bearbrand.fourney.ui.history.detail
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.ItemDetailHistoryBinding
-import com.bearbrand.fourney.model.DummyObjectModel
+import com.bearbrand.fourney.model.DetailObjectEntity
 
 
-class DetailHistoryAdapter(private val listItem: ArrayList<DummyObjectModel>) :
+class DetailHistoryAdapter(private val listItem: ArrayList<DetailObjectEntity>) :
     RecyclerView.Adapter<DetailHistoryAdapter.ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -28,7 +27,7 @@ class DetailHistoryAdapter(private val listItem: ArrayList<DummyObjectModel>) :
 
     inner class ListViewHolder(private val binding: ItemDetailHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DummyObjectModel) {
+        fun bind(item: DetailObjectEntity) {
             with(binding) {
                 val coin = "+ ${item.poin} Coin Point"
                 if (item.done) {

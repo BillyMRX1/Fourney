@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     tools:context=".ui.history.HistoryFragment">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_title"
         style="@style/black_sb_16"
@@ -17,22 +28,29 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
         android:id="@+id/rv_history"
-        android:layout_marginTop="24dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_history"
-        app:layout_constraintTop_toBottomOf="@id/tv_title">
+        android:layout_marginTop="24dp"
+        android:visibility="invisible"
+        tools:itemCount="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        tools:listitem="@layout/item_history">
 
     </androidx.recyclerview.widget.RecyclerView>
+
     <LinearLayout
-        android:visibility="gone"
+        android:id="@+id/history_empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -48,20 +66,20 @@
 
         <TextView
             style="@style/black_m_14"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
             android:text="Belum terdapat riwayat tantangan" />
 
         <TextView
-            android:layout_marginHorizontal="32dp"
-            android:layout_gravity="center"
-            android:gravity="center"
+            style="@style/gray_r_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yuk, kunjungi tempat wisata dan selesaikan tantangan yang ada di sana"
-            style="@style/gray_r_12"/>
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="32dp"
+            android:gravity="center"
+            android:text="Yuk, kunjungi tempat wisata dan selesaikan tantangan yang ada di sana" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

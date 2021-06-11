@@ -47,7 +47,7 @@ class LeaderboardFragment : Fragment() {
             tvUsername.text = user.username
             val imageAvatar =
                 if (user.imgPhoto.isNotEmpty()) user.imgPhoto else R.drawable.ic_base_avatar
-
+            ivXp.visibility = View.VISIBLE
             Glide.with(requireContext())
                 .load(imageAvatar)
                 .placeholder(R.drawable.no_image)

@@ -2,21 +2,15 @@ package com.bearbrand.fourney.ui.history
 
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.databinding.ItemHistoryBinding
-import com.bearbrand.fourney.databinding.ItemLeaderboardBinding
-import com.bearbrand.fourney.model.DummyHistoryModel
-import com.bearbrand.fourney.model.HistoryModel
-import com.bearbrand.fourney.model.LeaderboardModel
+import com.bearbrand.fourney.model.HistoryEntity
 import com.bearbrand.fourney.ui.history.detail.DetailHistoryActivity
-import com.bumptech.glide.Glide
 
-class HistoryAdapter(private val listItem: ArrayList<DummyHistoryModel>) :
+class HistoryAdapter(private val listItem: ArrayList<HistoryEntity>) :
     RecyclerView.Adapter<HistoryAdapter.ListViewHolder>() {
 
 
@@ -34,13 +28,13 @@ class HistoryAdapter(private val listItem: ArrayList<DummyHistoryModel>) :
 
     inner class ListViewHolder(private val binding: ItemHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DummyHistoryModel) {
+        fun bind(item: HistoryEntity) {
             with(binding) {
                 val coin = "+ ${item.coin} CP"
                 val xp = "+ ${item.xp} XP"
                 tvCoin.text = coin
                 tvXp.text = xp
-                tvPlace.text = item.idPlace
+                tvPlace.text = item.placeName
                 tvDate.text = item.date
 
                 val numberChallenge = "${item.challengeDone}/${item.challengeNumber}"
