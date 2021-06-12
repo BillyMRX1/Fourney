@@ -78,7 +78,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.OnProgressListener;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -556,14 +558,13 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     }
 
-    private void checkNotification() {
+     private void checkNotification() {
         CollectionReference data = FirebaseFirestore.getInstance().collection("users");
         Query query = data.whereEqualTo("status", "Positive");
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-//                if(task.getResult()!=null){
-                for (DocumentSnapshot document : task.getResult()) {
+            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+                for (DocumentSnapshot document : value) {
                     Log.d("Status Positive", document.getString("uid"));
                     DocumentReference historyRef = FirebaseFirestore.getInstance().collection("history").document(document.getString("uid"));
                     historyRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

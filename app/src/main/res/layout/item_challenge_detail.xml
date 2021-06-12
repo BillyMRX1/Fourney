@@ -8,11 +8,12 @@
     android:layout_marginBottom="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/img_pointer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -28,9 +29,9 @@
             android:layout_marginStart="8dp"
             android:fontFamily="@font/work_sans_bold"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-            app:layout_constraintStart_toEndOf="@+id/imageView5"
-            app:layout_constraintTop_toTopOf="@+id/imageView5"
+            app:layout_constraintBottom_toBottomOf="@+id/img_pointer"
+            app:layout_constraintStart_toEndOf="@+id/img_pointer"
+            app:layout_constraintTop_toTopOf="@+id/img_pointer"
             tools:text="Object Name" />
 
         <TextView
@@ -40,8 +41,8 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/work_sans"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/imageView5"
-            app:layout_constraintTop_toBottomOf="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="@+id/img_pointer"
+            app:layout_constraintTop_toBottomOf="@+id/img_pointer"
             tools:text="+ 5 poin" />
 
         <ImageView

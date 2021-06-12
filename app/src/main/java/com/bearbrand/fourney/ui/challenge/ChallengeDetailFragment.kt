@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.MetadataChanges
 
 class ChallengeDetailFragment : Fragment() {
 
@@ -66,7 +65,6 @@ class ChallengeDetailFragment : Fragment() {
         val id = args.id
         val reference = FirebaseFirestore.getInstance().collection("place").document(id)
         reference.get().addOnSuccessListener {
-
             binding.tvLocationName.text = it.getString("title")
         }
     }
@@ -74,7 +72,7 @@ class ChallengeDetailFragment : Fragment() {
     private fun loadObject() {
         val reference = FirebaseFirestore.getInstance().collection("objects").document(args.id)
             .collection("listObjects")
-        reference.addSnapshotListener(MetadataChanges.INCLUDE) { data, _ ->
+        reference.addSnapshotListener { data, _ ->
             if (data != null) {
                 if (data.size() > 0) {
                     binding.rvPlaces.visibility = View.VISIBLE

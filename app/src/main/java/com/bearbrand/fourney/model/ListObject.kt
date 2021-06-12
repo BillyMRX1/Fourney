@@ -11,5 +11,6 @@ data class ListObject(
     var desc: String = "",
     var xp: Int = 0,
     var hint: String = "",
-    var id : String = ""
-):Parcelable
+    var id: String = "",
+    var idUser: ArrayList<String> = arrayListOf()
+) : Parcelable
