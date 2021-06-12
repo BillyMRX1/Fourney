@@ -470,7 +470,6 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private void checkUser() {
 
         if (user != null) {
-            Toast.makeText(this, "Ada user", Toast.LENGTH_LONG).show();
             DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
                     createItemFor(POS_CLOSE),
                     createItemFor(POS_HOME).setChecked(true),
@@ -492,7 +491,6 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
             adapter.setSelected(POS_HOME);
 
         } else {
-            Toast.makeText(this, "Tidak ada user", Toast.LENGTH_LONG).show();
             DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
                     createItemFor(POS_CLOSE),
                     createItemFor(POS_HOME).setChecked(true),

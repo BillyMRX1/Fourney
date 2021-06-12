@@ -64,7 +64,7 @@
             android:layout_marginBottom="18dp"
             android:drawablePadding="6dp"
             android:text="+ 150 CP"
-            app:drawableStartCompat="@drawable/ic_coin"
+            app:drawableStartCompat="@drawable/ic_small_coin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_date"
             app:layout_constraintTop_toBottomOf="@+id/tv_date" />

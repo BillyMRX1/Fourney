@@ -12,25 +12,44 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class RewardViewModel : ViewModel() {
 
-    fun getUser(uid: String): LiveData<UserModel> {
-        val user = MutableLiveData<UserModel>()
-        CoroutineScope(Dispatchers.IO).launch {
+    suspend fun getUser(uid: String): UserModel {
+        var user = UserModel()
+        val getData = CoroutineScope(Dispatchers.IO).launch {
+            delay(2000L)
             val querySnapshot = Firebase.firestore.collection("users")
                 .whereEqualTo("uid", uid)
                 .get()
                 .await()
             for (users in querySnapshot.documents) {
-                users.toObject<UserModel>().also {
-                    user.postValue(it)
+                users.toObject<UserModel>()?.also {
+                    user = it
                 }
             }
         }
+        getData.join()
         return user
+    }
+    suspend fun getUserKoin(uid: String): Int {
+        var user = UserModel()
+        val getData = CoroutineScope(Dispatchers.IO).launch {
+            val querySnapshot = Firebase.firestore.collection("users")
+                .whereEqualTo("uid", uid)
+                .get()
+                .await()
+            for (users in querySnapshot.documents) {
+                users.toObject<UserModel>()?.also {
+                    user = it
+                }
+            }
+        }
+        getData.join()
+        return user.point
     }
 
     fun getListTicket(): LiveData<ArrayList<TiketModel>> {
@@ -55,8 +74,7 @@ class RewardViewModel : ViewModel() {
     suspend fun getUserTiket(uid: String): ArrayList<TiketModel> {
         val listKupon = ArrayList<TiketModel>()
         var kuponUser = UserKuponModel()
-
-        val getData  =  CoroutineScope(Dispatchers.IO).launch {
+            val getData = CoroutineScope(Dispatchers.IO).launch {
             val kuponUserSnapshot = Firebase.firestore.collection("kuponUser")
                 .whereEqualTo("uid", uid)
                 .get()
@@ -89,7 +107,7 @@ class RewardViewModel : ViewModel() {
         return listKupon
     }
 
-    suspend fun getMyChallenge(uid: String): Int{
+    suspend fun getMyChallenge(uid: String): Int {
         var numberChallenge = 0
         val listHistory = ArrayList<HistoryModel>()
         val gettingData = CoroutineScope(Dispatchers.IO).launch {
