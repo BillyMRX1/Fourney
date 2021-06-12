@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bearbrand.fourney.databinding.ActivityCameraBinding
 import com.bearbrand.fourney.tflite.Classifier
 import com.bearbrand.fourney.tflite.IClassifier
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.wonderkiln.camerakit.*
 import java.util.concurrent.Executors
@@ -41,18 +43,18 @@ class CameraActivity : AppCompatActivity() {
                 result = classifier.recognizeImage(bitmap)
                 Log.d("SCAN: ", result.toString())
                 if (result[0].confidence >= 0.9) {
-                    Log.d("ID", "title "+result[0].title)
+                    Log.d("ID", "title " + result[0].title)
                     Log.d("ID", "objectId $objectId")
                     if (result[0].title == objectId) {
                         getData()
                         binding.viewSuccess.root.visibility = View.VISIBLE
                     } else {
                         binding.viewFailed.root.visibility = View.VISIBLE
-                        Log.d("Failed: ","Failed 1")
+                        Log.d("Failed: ", "Failed 1")
                     }
                 } else {
                     binding.viewFailed.root.visibility = View.VISIBLE
-                    Log.d("Failed: ","Failed 3")
+                    Log.d("Failed: ", "Failed 3")
                 }
             }
 
@@ -62,6 +64,27 @@ class CameraActivity : AppCompatActivity() {
         binding.btnShutter.setOnClickListener {
             binding.cameraView.captureImage()
             binding.cameraView.stop()
+        }
+
+        binding.viewSuccess.btnNext.setOnClickListener {
+            val reference =
+                FirebaseFirestore.getInstance().collection("objects").document(locationId)
+                    .collection("listObjects").document(objectId)
+            val user = FirebaseAuth.getInstance().currentUser
+            val referenceUser =
+                FirebaseFirestore.getInstance().collection("users").document(user!!.uid)
+            referenceUser.get().addOnSuccessListener {
+                var poin = it.getLong("point")
+                var xp = it.getLong("xp")
+                reference.addSnapshotListener { data, _ ->
+                    poin = poin?.plus(data!!.getLong("coint")!!)
+                    xp = xp?.plus(data!!.getLong("xp")!!)
+                    referenceUser.update("point", poin)
+                    referenceUser.update("xp", xp)
+                }
+            }
+            reference.update("idUser", FieldValue.arrayUnion(user.uid))
+            onBackPressed()
         }
         initTensorFlowAndLoadModel()
     }

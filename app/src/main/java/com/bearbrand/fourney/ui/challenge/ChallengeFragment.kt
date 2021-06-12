@@ -22,7 +22,6 @@ class ChallengeFragment : Fragment() {
     private var _binding: FragmentChallengeBinding? = null
     private val binding get() = _binding!!
     private lateinit var reference: CollectionReference
-    private lateinit var refer: DocumentReference
     private lateinit var referenceUser: DocumentReference
     private lateinit var data: DocumentReference
     private val firestore = FirebaseFirestore.getInstance()

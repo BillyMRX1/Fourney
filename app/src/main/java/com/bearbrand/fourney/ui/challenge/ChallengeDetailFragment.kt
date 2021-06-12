@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.MetadataChanges
 
 class ChallengeDetailFragment : Fragment() {
 
@@ -39,9 +40,13 @@ class ChallengeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadUser()
         loadDetail()
         loadObject()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadUser()
     }
 
     @SuppressLint("SetTextI18n")
@@ -50,9 +55,9 @@ class ChallengeDetailFragment : Fragment() {
         if (user != null) {
             val uid = user.uid
             data = firestore.collection("users").document(uid)
-            data.get().addOnSuccessListener {
-                binding.tvPoin.text = it.getLong("point").toString() + " CP"
-                binding.tvXp.text = it.getLong("xp").toString() + " XP"
+            data.addSnapshotListener { data, _ ->
+                binding.tvPoin.text = data?.getLong("point").toString() + " CP"
+                binding.tvXp.text = data?.getLong("xp").toString() + " XP"
             }
         }
     }
@@ -61,6 +66,7 @@ class ChallengeDetailFragment : Fragment() {
         val id = args.id
         val reference = FirebaseFirestore.getInstance().collection("place").document(id)
         reference.get().addOnSuccessListener {
+
             binding.tvLocationName.text = it.getString("title")
         }
     }
@@ -68,7 +74,7 @@ class ChallengeDetailFragment : Fragment() {
     private fun loadObject() {
         val reference = FirebaseFirestore.getInstance().collection("objects").document(args.id)
             .collection("listObjects")
-        reference.addSnapshotListener { data, _ ->
+        reference.addSnapshotListener(MetadataChanges.INCLUDE) { data, _ ->
             if (data != null) {
                 if (data.size() > 0) {
                     binding.rvPlaces.visibility = View.VISIBLE
