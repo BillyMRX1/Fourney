@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.bearbrand.fourney.MenuActivity
 import com.bearbrand.fourney.adapter.ChallengeDetailAdapter
 import com.bearbrand.fourney.databinding.FragmentChallengeDetailBinding
 import com.bearbrand.fourney.helper.OnItemClickListener
@@ -41,6 +42,10 @@ class ChallengeDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         loadDetail()
         loadObject()
+
+        binding.btnSelesai.setOnClickListener {
+            startActivity(Intent(context, MenuActivity::class.java))
+        }
     }
 
     override fun onResume() {

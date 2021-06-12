@@ -14,19 +14,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
-import com.bearbrand.fourney.MenuActivity
 import com.bearbrand.fourney.R
 import com.bearbrand.fourney.adapter.ObjectAdapter
 import com.bearbrand.fourney.databinding.FragmentDetailPlaceBinding
 import com.bearbrand.fourney.model.HistoryModel
 import com.bearbrand.fourney.model.ListObject
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,7 +53,11 @@ class DetailPlaceFragment : Fragment() {
 
         binding.btnStartChallenge.setOnClickListener {
             addToHistory()
-            findNavController().navigate(DetailPlaceFragmentDirections.actionDetailPlaceFragment2ToChallengeDetailFragment(args.id))
+            findNavController().navigate(
+                DetailPlaceFragmentDirections.actionDetailPlaceFragment2ToChallengeDetailFragment(
+                    args.id
+                )
+            )
         }
 
         loadDataObjects()
@@ -79,16 +82,17 @@ class DetailPlaceFragment : Fragment() {
         val query = ref.whereEqualTo("idUser", uid)
         query.addSnapshotListener { document, _ ->
             Log.d("ID REF", data.id)
-            if(document != null){
-                if(document.size() > 0){
+            if (document != null) {
+                if (document.size() > 0) {
                     data.update("place", FieldValue.arrayUnion(hashmap)).addOnCompleteListener {
-                        Toast.makeText(context, "Data berhasil di update", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Data berhasil di update", Toast.LENGTH_SHORT)
+                            .show()
                     }
-                }else{
-                     data.set(historyData).addOnCompleteListener {
-                    Toast.makeText(context, "History Berhasil", Toast.LENGTH_SHORT).show()
-                    //intent
-                }
+                } else {
+                    data.set(historyData).addOnCompleteListener {
+                        Toast.makeText(context, "History Berhasil", Toast.LENGTH_SHORT).show()
+                        //intent
+                    }
                 }
 
             }
@@ -115,7 +119,6 @@ class DetailPlaceFragment : Fragment() {
     }
 
 
-
     private fun raiseDialog(id: String) {
         val materialBuilder = MaterialAlertDialogBuilder(requireContext()).create()
         val inflater = layoutInflater.inflate(R.layout.dialog_info_risk, null)
@@ -132,24 +135,30 @@ class DetailPlaceFragment : Fragment() {
                 if (data != null) {
                     if (data.size() > 0) {
                         numPeople.text = "${data.size()} Orang"
-                        var getRisk= ""
-                        if (data.size() <= 50)  getRisk = "Low"
-                        if (data.size() > 50 && data.size() <= 100 ) getRisk = "Medium"
+                        var getRisk = ""
+                        if (data.size() <= 50) getRisk = "Low"
+                        if (data.size() > 50 && data.size() <= 100) getRisk = "Medium"
                         if (data.size() > 100) getRisk = "High"
 
                         risk.text = "${getRisk} Risk"
 
-                        if (getRisk.equals("Low", true)){
-                            getContext()?.getResources()?.let { it1 -> risk?.setTextColor(it1.getColor(R.color.green)) }
-                            getContext()?.getResources()?.let { it1 -> numPeople?.setTextColor(it1.getColor(R.color.green)) }
+                        if (getRisk.equals("Low", true)) {
+                            getContext()?.getResources()
+                                ?.let { it1 -> risk?.setTextColor(it1.getColor(R.color.green)) }
+                            getContext()?.getResources()
+                                ?.let { it1 -> numPeople?.setTextColor(it1.getColor(R.color.green)) }
 
-                        }else if(getRisk.equals("Medium", true)){
-                            getContext()?.getResources()?.let { it1 -> risk?.setTextColor(it1.getColor(R.color.orange)) }
-                            getContext()?.getResources()?.let { it1 -> numPeople?.setTextColor(it1.getColor(R.color.orange)) }
+                        } else if (getRisk.equals("Medium", true)) {
+                            getContext()?.getResources()
+                                ?.let { it1 -> risk?.setTextColor(it1.getColor(R.color.orange)) }
+                            getContext()?.getResources()
+                                ?.let { it1 -> numPeople?.setTextColor(it1.getColor(R.color.orange)) }
 
-                        }else if(getRisk.equals("High", true)){
-                            getContext()?.getResources()?.let { it1 -> risk?.setTextColor(it1.getColor(R.color.red)) }
-                            getContext()?.getResources()?.let { it1 -> numPeople?.setTextColor(it1.getColor(R.color.red)) }
+                        } else if (getRisk.equals("High", true)) {
+                            getContext()?.getResources()
+                                ?.let { it1 -> risk?.setTextColor(it1.getColor(R.color.red)) }
+                            getContext()?.getResources()
+                                ?.let { it1 -> numPeople?.setTextColor(it1.getColor(R.color.red)) }
                         }
 
                     }
@@ -207,9 +216,9 @@ class DetailPlaceFragment : Fragment() {
                 val locationUser = document.getString("location").toString()
                 val titlePlace = it.getString("title").toString()
 
-                if (locationUser.equals(titlePlace,true)){
+                if (locationUser.equals(titlePlace, true)) {
                     binding.btnStartChallenge.isEnabled = true
-                }else{
+                } else {
                     binding.btnStartChallenge.isEnabled = false
                 }
             }

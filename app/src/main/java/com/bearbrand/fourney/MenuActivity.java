@@ -643,7 +643,7 @@ public class MenuActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     .setSmallIcon(R.drawable.logo_blue)
                     .setColor(getResources().getColor(R.color.blue))
                     .setContentTitle("Peringatan Karantina Mandiri")
-                    .setContentText("Berdasarkan kunjunganmu tanggal 20 Maret di Batu Night Spectaculer, terindikasi pengunjung mengalami gejala Covid 19. Segera lakukan karantina mandiri.")
+                    .setContentText("Berdasarkan kunjunganmu tanggal 10 Juni 2021 di Batu Night Spectaculer, terindikasi pengunjung mengalami gejala Covid 19. Segera lakukan karantina mandiri.")
                     .setAutoCancel(true);
 
         /*

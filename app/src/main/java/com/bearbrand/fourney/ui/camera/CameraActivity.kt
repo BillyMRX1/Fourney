@@ -5,14 +5,19 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bearbrand.fourney.databinding.ActivityCameraBinding
+import com.bearbrand.fourney.model.HistoryModel
 import com.bearbrand.fourney.tflite.Classifier
 import com.bearbrand.fourney.tflite.IClassifier
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.wonderkiln.camerakit.*
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity() {
@@ -84,6 +89,10 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
             reference.update("idUser", FieldValue.arrayUnion(user.uid))
+            onBackPressed()
+        }
+
+        binding.viewFailed.btnNext.setOnClickListener {
             onBackPressed()
         }
         initTensorFlowAndLoadModel()
